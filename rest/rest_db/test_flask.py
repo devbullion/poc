@@ -6,9 +6,11 @@ Created on Oct 16, 2024
 
 from psycopg2 import pool
 from flask import Flask, request, jsonify
+from flask_cors import CORS, cross_origin
 import dbutils
 
 app = Flask(__name__)
+CORS(app)
 print(f"NAME: {__name__}")
 
 host="35.243.96.1"
@@ -49,6 +51,7 @@ btype_dict = {
 
 
 @app.get("/listings")
+@cross_origin()
 def get_listings():
     # The parameters have to be in this specific order to fit the SQL code
     b_type = request.args.get('btype')

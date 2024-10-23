@@ -1,0 +1,26 @@
+.slider-container {
+  width: 100%; /* Set container width */
+  max-width: 200px; /* You can change this to the desired slider width */
+  position: relative; /* Relative positioning for absolute label positioning */
+}
+
+.labels {
+  position: relative; /* Labels are positioned relative to the slider container */
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.left-label {
+  position: absolute;
+  left: 0; /* Aligns with the leftmost part of the slider */
+}
+
+.right-label {
+  position: absolute;
+  right: 0; /* Aligns with the rightmost part of the slider */
+}
+
+input[type="range"] {
+  width: 100%; /* Slider takes the full width of the container */
+}
