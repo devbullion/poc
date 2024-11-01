@@ -8,9 +8,16 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "bulma": "^1.0.2",
+    "chart.js": "^4.4.6",
+    "chartjs-plugin-datalabels": "^2.2.0",
     "core-js": "^3.8.3",
+    "leaflet": "^1.9.4",
+    "leaflet.gridlayer.googlemutant": "^0.14.1",
     "vue": "^3.5.12",
+    "vue-chartjs": "^5.3.1",
     "vue-good-table": "^2.21.11",
+    "vue3-leaflet": "^1.0.50",
     "vuex": "^4.1.0"
   },
   "devDependencies": {

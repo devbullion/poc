@@ -11,8 +11,6 @@ brew upgrade node
 
 # Install Vue.js/CLI
 npm install -g @vue/cli
-
-npm install vue-good-table
 npm install vue-router
 npm install vuex
 
@@ -22,3 +20,10 @@ npm install vuex
 # Install Bulma
 npm install -D sass sass-loader
 npm install bulma
+
+# For the Maps
+npm install vue3-leaflet leaflet
+npm install leaflet.gridlayer.googlemutant
+
+npm install chart.js vue-chartjs
+npm install chartjs-plugin-datalabels
