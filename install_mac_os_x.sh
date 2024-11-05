@@ -5,7 +5,6 @@ brew upgrade node
 
 # node -v
 # v22.10.0
-
 # npm -v
 # 10.9.0
 
@@ -25,5 +24,10 @@ npm install bulma
 npm install vue3-leaflet leaflet
 npm install leaflet.gridlayer.googlemutant
 
+# For the Charts
 npm install chart.js vue-chartjs
 npm install chartjs-plugin-datalabels
+
+# Run the app
+npm run build-css
+npm run serve

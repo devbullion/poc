@@ -11,7 +11,7 @@
                 </td>
                 <!-- Address -->
                 <td class="info-col">
-                    <div class="address">{{ listing.add_pref_name }}{{ listing.add_city_name }}{{ listing.add_street_name }}</div>
+                    <div class="address">{{ listing.address }}</div>
                 </td>
             </tr>
 

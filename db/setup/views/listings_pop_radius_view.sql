@@ -4,25 +4,17 @@ CREATE MATERIALIZED VIEW listings_pop_radius_view AS
 
 WITH tmp_distances AS (
     SELECT 
-        l.listing_id,
-        l.add_pref_name,
-        l.add_city_name,
-        l.add_street_name,
-        l.price,
-        l.sq_m,
-        l.lon, l.lat,
-        
-        (l.price / l.sq_m) AS price_per_sq_m,
-        
-        p.*,
-        ST_Distance(ST_MakePoint(l.lon, l.lat)::geography, ST_MakePoint(p.x_code, p.y_code)::geography) AS distance
+        (l.rent_price / l.size_number) AS price_per_sq_m,
+        ST_Distance(ST_MakePoint(l.longitude, l.latitude)::geography, ST_MakePoint(p.x_code, p.y_code)::geography) AS distance,
+		l.*,
+        p.*
     FROM
         re_listings l
     JOIN
         pop_and_shapes_view p
     ON
         ST_DWithin(
-            ST_MakePoint(l.lon, l.lat)::geography,
+            ST_MakePoint(l.longitude, l.latitude)::geography,
             ST_MakePoint(p.x_code, p.y_code)::geography,
             10000 --10km (largest radius we consider now)
         )
@@ -30,15 +22,16 @@ WITH tmp_distances AS (
 
 
 SELECT 
-    listing_id,
-   	lon, lat,
-    add_pref_name,
-    add_city_name,
-    add_street_name,
-    price,
-    sq_m,
+	source,
+    property_inquiry_number,
+    address,
+	address_kanji,
+	longitude, latitude,
+    rent_price as price,
+    size_number as sq_m,
     
     price_per_sq_m,
+	page_url,
     
     -- 2km M
 	SUM(CASE WHEN distance <= 2000 THEN pop_m_total ELSE 0 END) AS pop_m_total_2km,
@@ -178,14 +171,15 @@ SELECT
 	
 FROM tmp_distances
 GROUP BY 
-    listing_id,
-    lon, lat,
-    add_pref_name,
-    add_city_name,
-    add_street_name,
-    price,
-    sq_m,
-    price_per_sq_m;
+    source,
+    property_inquiry_number,
+    address, address_kanji,
+	longitude, latitude,
+    rent_price,
+    size_number,
+    
+    price_per_sq_m,
+	page_url;
     
 GRANT SELECT ON listings_pop_radius_view TO python;
 GRANT SELECT ON listings_pop_radius_view TO gen;

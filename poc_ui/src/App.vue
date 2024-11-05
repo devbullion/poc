@@ -62,9 +62,7 @@ export default {
   components: {
     POCMap,
 
-    GenderSlider,
-    PriceSlider,
-    SizeSlider
+    GenderSlider, PriceSlider, SizeSlider
   },
   
   data() {
@@ -88,34 +86,34 @@ export default {
   },
   
   methods: {
-  /** Simple method to create the API string */  
-	createApiUrl(){
-		return `http://127.0.0.1:5000/listings?lat=${this.mapLatLng[0]}&lon=${this.mapLatLng[1]}&dist=${this.mapRadius}&m=${this.genderValue}&size=${this.sizeValue}&px=${this.priceValue}&btype=${this.businessType}`;
-	},
-	
-	async callApi(){
-		this.apiUrl = this.createApiUrl();
-		
-		try{
-      console.log("Fetching from API: "+ this.apiUrl);
+    /** Simple method to create the API string */  
+    createApiUrl(){
+      return `https://gold-rush-14804388067.asia-northeast1.run.app/listings?lat=${this.mapLatLng[0]}&lon=${this.mapLatLng[1]}&dist=${this.mapRadius}&m=${this.genderValue}&size=${this.sizeValue}&px=${this.priceValue}&btype=${this.businessType}`;
+    },
+    
+    async callApi(){
+      this.apiUrl = this.createApiUrl();
+      
+      try{
+        console.log("Fetching from API: "+ this.apiUrl);
 
-			const response = await fetch(this.apiUrl);
-			if(! response.ok) throw new Error('Network Response was not ok', response);
-			const data = await response.json();
+        const response = await fetch(this.apiUrl);
+        if(! response.ok) throw new Error('Network Response was not ok', response);
+        const data = await response.json();
 
-			console.log("Received the data from the API", data);
-			this.apiResponse = data;
-			
-			if(data.length > 0){
-				this. columns = Object.keys(data[0]).map(key => ({
-					label: key,
-					field: key
-				}));
-			}
-		} catch(error) {
-			console.error('Error fetching from the API: ', error);
-		}
-	}
+        console.log("Received the data from the API", data);
+        this.apiResponse = data;
+        
+        if(data.length > 0){
+          this. columns = Object.keys(data[0]).map(key => ({
+            label: key,
+            field: key
+          }));
+        }
+      } catch(error) {
+        console.error('Error fetching from the API: ', error);
+      }
+    }
   },
   
   mounted() {
@@ -132,3 +130,5 @@ export default {
   }
 };
 </script>
+
+<style src="./assets/styles/css/styles.css"></style>

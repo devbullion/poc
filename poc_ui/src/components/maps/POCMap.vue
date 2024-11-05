@@ -28,12 +28,12 @@
         <template v-for="listing in listings">
             <LMarker
                 v-if="listing!=null && listing.total_score >= 60"
-                :key="listing.listing_id"
-                :latlng="[listing.lat, listing.lon]"
+                :key="listing.property_inquiry_number"
+                :latlng="[listing.latitude, listing.longitude]"
             >
                 <!-- We set autoPan to false due to the recursion -->
-                <LPopup ref="popup" :autoPan="false" :listing_id= "listing.listing_id">
-                    <MapPopupView :listing="listing" :debug="debug" :ref="'mapPopup_' + listing.listing_id"  />
+                <LPopup ref="popup" :autoPan="false" :listing_id= "listing.property_inquiry_number">
+                    <MapPopupView :listing="listing" :debug="debug" :ref="'mapPopup_' + listing.property_inquiry_number"  />
                 </LPopup>
             </LMarker>
         </template>
