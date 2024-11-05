@@ -7,13 +7,14 @@ Created on Oct 16, 2024
 from psycopg2 import pool
 from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
-import dbutils
+from db import dbutils
+import os
 
 app = Flask(__name__)
 CORS(app)
 print(f"NAME: {__name__}")
 
-host="35.243.96.1"
+host="10.26.208.4" # Private IP of the PostgreSQL server
 dbname="jp_estat_2020"
 user="python"
 password="pythondevbullion"
@@ -59,7 +60,7 @@ def get_listings():
     
     # Run the SQL code to get the results
     dict_results = dbutils.run_query_from_file_and_return_dict(
-        f"queries/gps_listings_{b_type}_query.sql", 
+        f"db/queries/gps_listings_{b_type}_query.sql", 
         params,
         connection_pool
     )
@@ -67,4 +68,7 @@ def get_listings():
     return jsonify(dict_results)
 
 
-
+if __name__ == "__main__":
+    # Use the PORT environment variable or default to 8080
+    port = int(os.environ.get("PORT", 8080))
+    app.run(host='0.0.0.0', port=port)

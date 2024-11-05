@@ -4,7 +4,7 @@ WITH listing_distances AS (
     	-- The dist between each listing and the query gps
 		ST_Distance(
 			ST_MakePoint(%(lon)s, %(lat)s)::geography, -- These will be replaced by (lon, lat) parameter
-			ST_MakePoint(lon, lat)::geography
+			ST_MakePoint(longitude, latitude)::geography
 		) AS distance,
 
     	-- Used for calcs for the scores
@@ -31,10 +31,11 @@ WITH listing_distances AS (
 -- Filter by the distances
 -- Returns a list of listings within the specific radius
 SELECT 
-	listing_id,
+	source,
+  	property_inquiry_number,
 	distance,
-  	lon, lat,
-  	add_pref_name, add_city_name, add_street_name,
+  	longitude, latitude,
+  	address, address_kanji,
 
   	price, sq_m, price_per_sq_m,
   	num_members, tgt_num_members,

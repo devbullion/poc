@@ -1,0 +1,7 @@
+# For the DB
+psycopg2-binary
+
+# For flask
+flask
+flask-cors
+requests
