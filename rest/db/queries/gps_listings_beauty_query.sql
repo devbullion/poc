@@ -70,4 +70,5 @@ FROM (
   FROM listing_distances
 )
 WHERE 
-	distance <= %(dist)s; --The dist parameter
+  distance <= %(dist)s --The dist parameter
+ORDER BY address DESC, total_score DESC;
