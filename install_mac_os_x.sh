@@ -27,7 +27,9 @@ npm install leaflet.gridlayer.googlemutant
 # For the Charts
 npm install chart.js vue-chartjs
 npm install chartjs-plugin-datalabels
+npm install countup.js
 
 # Run the app
+npm update
 npm run build-css
 npm run serve

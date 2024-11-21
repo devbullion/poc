@@ -1,13 +1,12 @@
 <template>
     <!-- Map -->
     <div>
-    <p>{{ modelValue }}</p>
+    <!-- Add this here: @moveend="updateCenter" to update-->
     <LMap
         ref="map"
-        :zoom="13"
+        :zoom="12"
         :center="modelValue"
         style="height: 100%; width: 100%"
-        @moveend="updateCenter"
     >
         <!-- The Map Tile -->
         <LTileLayer 
@@ -20,20 +19,31 @@
         <LCircle 
             ref="debug_circle"
             v-if="debug"
-            :latlng="modelValue" :radius="radius" color="black" 
-        >
-        </LCircle>
+              :latlng="modelValue" 
+              :radius="radius" color="black" 
+        />
         
         <!-- Loop over the listings and put markers-->
-        <template v-for="listing in listings">
+        <template v-for="listing in groupedListings" :key="listing.address">
             <LMarker
-                v-if="listing!=null && listing.total_score >= 60"
-                :key="listing.property_inquiry_number"
-                :latlng="[listing.latitude, listing.longitude]"
+                v-if="listing!=null && listing.lat!=null && listing.lng!=null"
+                :key="listing.address+'_Lmarker'"
+                :latlng="[listing.lat, listing.lng]"
+                width="480px" height="1000px"
             >
                 <!-- We set autoPan to false due to the recursion -->
-                <LPopup ref="popup" :autoPan="false" :listing_id= "listing.property_inquiry_number">
-                    <MapPopupView :listing="listing" :debug="debug" :ref="'mapPopup_' + listing.property_inquiry_number"  />
+                <LPopup 
+                  ref="popup" 
+                  :listing_id= "listing.property_inquiry_number"
+                  :key="listing.property_inquiry_number + '_Lpopup'"
+                >
+                    <MapPopupListings 
+                      :address="listing.address"
+                      :latlng="[listing.lat, listing.lng]"
+                      :listings="listing.listings" 
+                      :debug="debug" 
+                      :ref="'mapPopup_' + listing.property_inquiry_number"
+                    />
                 </LPopup>
             </LMarker>
         </template>
@@ -46,10 +56,9 @@ import { LMap, LTileLayer, LMarker, LCircle, LPopup } from 'vue3-leaflet';
 import {ref} from 'vue';
 import 'leaflet/dist/leaflet.css';
 
-import MapPopupView from './MapPopupView.vue';
+import MapPopupListings from './MapPopupListings.vue';
 
 export default {
-
   setup(){
     const debug_circle = ref(null);
     return {debug_circle};
@@ -57,30 +66,36 @@ export default {
   props: {
     modelValue: { type: Array, required: true },
     radius: {type: Number, required: true, default: 5000},
-
     listings: {type: Array, required: true, default: () => []},
-
     debug: {type: Boolean, required: true, default: false},
   },
   components: {
     LMap, LTileLayer, LMarker, LCircle, LPopup, 
-    MapPopupView
+    MapPopupListings
   },
-  mounted() {
-    this.$nextTick(() => {
-        console.log("mounted",this.$refs.map );
-        this.$refs.map.map.on('popupopen', this.onPopupOpen);
-    })
+  computed: {
+    groupedListings(){
+      return this.groupListingsByAddress(this.listings);
+    }
   },
   methods: {
-    onPopupOpen(e){
-        this.$nextTick(()=>{ 
-            const listingId = e.popup.options.listing_id;
-            const mapPopupRef = this.$refs['mapPopup_'+listingId];
-            console.log("Mappopup ref", mapPopupRef);
-        })
-    },
+    groupListingsByAddress(listings){
+        const grouped = {};
+        listings.forEach((listing) => {
+            if(! grouped[listing.address]){
+                grouped[listing.address] = {
+                    address: listing.address,
+                    lat: listing.latitude,
+                    lng: listing.longitude,
+                    top_score_flag: false, // Use this to highlight the top score(s)
+                    listings: []
+                }
+            }
 
+            grouped[listing.address].listings.push(listing);
+        });
+        return grouped;
+    },
 
     updateCenter(e) {
       const center = e.target.getCenter();
@@ -101,6 +116,7 @@ export default {
       }
     },
   },
+
 };
 </script>
 
@@ -109,4 +125,16 @@ export default {
     height: 640px !important;
     width: 640px !important;
   }
+
+.custom-popup {
+  width: 300px !important;
+  height: 300px !important;
+}
+
+.custom-popup-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
 </style>

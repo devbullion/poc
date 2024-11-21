@@ -6,7 +6,11 @@ CREATE TABLE re_listings(
 	page_url TEXT NOT NULL UNIQUE,
 	description TEXT NOT NULL,
 	station TEXT NULL,
-	walk_dist_to_station TEXT NULL,
+	dist_to_sta_str TEXT NULL,
+	dist_to_sta_walk_time INT NOT NULL,
+	dist_to_sta_other_mode TEXT NULL,
+	dist_to_sta_other_mode_time INT NULL,
+
 	flr_loc varchar(10) NULL,
 	age varchar(10) NULL,
 
@@ -28,7 +32,7 @@ CREATE TABLE re_listings(
 	number_of_floors VARCHAR(5) NULL,
 	underground_floors VARCHAR(20) NULL,
 
-	built_year varchar(10) NULL,
+	built_age int NULL,
 	building_type varchar(10) NULL,
 	direction varchar(5) NULL,
 	
@@ -59,6 +63,9 @@ CREATE TABLE re_listings(
 	features_and_facilities_of_shared_spaces TEXT NULL,
 	
 	built_month_year  TEXT NULL,
+	built_year INT NULL,
+	built_month INT NULL,
+
 	building_structure TEXT NULL,	
 	insurance TEXT NULL,	
 	transaction_type TEXT NULL,
@@ -80,25 +87,6 @@ CREATE TABLE re_listings(
 	created_by VARCHAR(30),
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
-
-
--- CREATE TABLE re_listings(
--- 	listing_id varchar(50) NOT NULL UNIQUE,
--- 	add_pref_name varchar(10) NOT NULL,
--- 	add_city_name varchar(20) NOT NULL,
--- 	add_street_name varchar(30) NULL,
-	
--- 	lat FLOAT NOT NULL,
--- 	lon FLOAT NOT NULL,
-	
--- 	price INT NULL,
--- 	sq_m FLOAT NULL,
-	
--- 	-- These are necessary for every table
--- 	created_by VARCHAR(30),
---  	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
--- );
 
 CREATE INDEX idx_re_listings_gps ON re_listings USING GIST(ST_MakePoint(longitude, latitude));
 CREATE INDEX idx_re_listings_source ON re_listings(source);

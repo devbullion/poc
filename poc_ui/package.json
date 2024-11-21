@@ -6,7 +6,6 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    
     "build-css": "sass --style=compressed --load-path=node_modules src/assets/styles/scss:src/assets/styles/css"
   },
   "dependencies": {
@@ -14,6 +13,7 @@
     "chart.js": "^4.4.6",
     "chartjs-plugin-datalabels": "^2.2.0",
     "core-js": "^3.8.3",
+    "countup.js": "^2.8.0",
     "leaflet": "^1.9.4",
     "leaflet.gridlayer.googlemutant": "^0.14.1",
     "vue": "^3.5.12",

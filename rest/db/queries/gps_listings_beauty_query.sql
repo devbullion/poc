@@ -35,6 +35,12 @@ SELECT
   longitude, latitude,
   address, address_kanji,
 
+  built_age, built_year, built_month,
+  
+  dist_to_sta_walk_time,
+	dist_to_sta_other_mode,
+	dist_to_sta_other_mode_time,
+  
   price, sq_m, price_per_sq_m,
   num_seats, tgt_num_seats,
   total_weighted_pop,

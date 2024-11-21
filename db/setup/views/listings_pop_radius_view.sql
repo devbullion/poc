@@ -32,6 +32,15 @@ SELECT
     
     price_per_sq_m,
 	page_url,
+
+	built_age,
+	built_year,
+	built_month,
+
+	dist_to_sta_walk_time,
+	dist_to_sta_other_mode,
+	dist_to_sta_other_mode_time,
+
     
     -- 2km M
 	SUM(CASE WHEN distance <= 2000 THEN pop_m_total ELSE 0 END) AS pop_m_total_2km,
@@ -171,15 +180,23 @@ SELECT
 	
 FROM tmp_distances
 GROUP BY 
-    source,
-    property_inquiry_number,
-    address, address_kanji,
+	source,
+	property_inquiry_number,
+	address, address_kanji,
 	longitude, latitude,
-    rent_price,
-    size_number,
-    
-    price_per_sq_m,
-	page_url;
+	rent_price,
+	size_number,
+	
+	price_per_sq_m,
+	page_url,
+
+	built_age,
+	built_year,
+	built_month,
+	
+	dist_to_sta_walk_time,
+	dist_to_sta_other_mode,
+	dist_to_sta_other_mode_time;
     
 GRANT SELECT ON listings_pop_radius_view TO python;
 GRANT SELECT ON listings_pop_radius_view TO gen;

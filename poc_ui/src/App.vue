@@ -1,30 +1,35 @@
 <template>
   <div>
+    <!-- Table will be removed later, this is just to layout -->
+    <table>
+      <tr>
+        <td>
+          <!-- Radio Buttons -->
+          <div>
+            <label><input type="radio" value="beauty" v-model="businessType" />Beauty Salon</label>
+            <label><input type="radio" value="gym" v-model="businessType" />Gym</label>
+          </div>
 
-    <!-- Radio Buttons -->
-    <div>
-      <label><input type="radio" value="beauty" v-model="businessType" />Beauty Salon</label>
-      <label><input type="radio" value="gym" v-model="businessType" />Gym</label>
-    </div>
+          <!-- Sliders -->
+          <GenderSlider v-model="genderValue" />
+          <SizeSlider v-model="sizeValue" />
+          <PriceSlider v-model="priceValue" />
 
-    <!-- Sliders -->
-    <GenderSlider v-model="genderValue" />
-    <SizeSlider v-model="sizeValue" />
-    <PriceSlider v-model="priceValue" />
-
-    <!-- Status -->
-    <p v-if = "debug" >
-      Gender Value: {{ (genderValue*100).toFixed(0) }}% Male<br>
-      Size Value: {{ sizeValue }}㎡<br>
-      Price Value: ￥{{ priceValue.toLocaleString() }}<br>
-      Lat, Lng: {{ mapLatLng }}<br>
-      Radius: {{mapRadius}}m
-    </p>
-
-    <!-- Map -->
-    <div>
-      <POCMap v-model="mapLatLng" :radius="mapRadius" :listings="apiResponse" :debug="debug" />
-    </div>
+          <!-- Status -->
+          <p v-if = "debug" >
+            Gender Value: {{ (genderValue*100).toFixed(0) }}% Male<br>
+            Size Value: {{ sizeValue }}㎡<br>
+            Price Value: ￥{{ priceValue.toLocaleString() }}<br>
+            Lat, Lng: {{ mapLatLng }}<br>
+            Radius: {{mapRadius}}m
+          </p>
+        </td>
+        <td>
+          <!-- Map -->
+          <POCMap v-model="mapLatLng" :radius="mapRadius" :listings="apiResponse" :debug="debug" /> 
+        </td>
+      </tr>
+    </table>
 
     <!-- API Call -->
     <p v-if="debug">
@@ -46,7 +51,6 @@
         </tbody>
       </table>
     </div>
-
   </div>
 </template>
 
@@ -61,15 +65,14 @@ import PriceSlider from './components/sliders/PriceSlider.vue';
 export default {
   components: {
     POCMap,
-
     GenderSlider, PriceSlider, SizeSlider
   },
   
   data() {
     return {
-      debug: true, // Change this to false	
+      debug: false, // Change this to false	
       mapLatLng: [34.6826516, 135.8154434], 
-      mapRadius: 5000,
+      mapRadius: 10000,
 
       businessType: "beauty",
       
@@ -95,13 +98,13 @@ export default {
       this.apiUrl = this.createApiUrl();
       
       try{
-        console.log("Fetching from API: "+ this.apiUrl);
+        //console.log("Fetching from API: "+ this.apiUrl);
 
         const response = await fetch(this.apiUrl);
         if(! response.ok) throw new Error('Network Response was not ok', response);
         const data = await response.json();
 
-        console.log("Received the data from the API", data);
+        //console.log("Received the data from the API", data);
         this.apiResponse = data;
         
         if(data.length > 0){
