@@ -24,25 +24,26 @@
         />
         
         <!-- Loop over the listings and put markers-->
-        <template v-for="listing in groupedListings" :key="listing.address">
+        <template v-for="listing in listings" :key="'key_'+listing.address">
             <LMarker
-                v-if="listing!=null && listing.lat!=null && listing.lng!=null"
-                :key="listing.address+'_Lmarker'"
-                :latlng="[listing.lat, listing.lng]"
+                v-if="listing!=null && listing.latitude!=null && listing.longitude!=null"
+                :key="'key_'+listing.address+'_Lmarker'"
+                :latlng="[listing.latitude, listing.longitude]"
                 width="480px" height="1000px"
+                @click="handleMarkerClick(listing.address)"
             >
                 <!-- We set autoPan to false due to the recursion -->
                 <LPopup 
                   ref="popup" 
-                  :listing_id= "listing.property_inquiry_number"
-                  :key="listing.property_inquiry_number + '_Lpopup'"
+                  :listing_id= "listing.address"
+                  :key="'key_'+listing.address + '_Lpopup'"
                 >
                     <MapPopupListings 
+                      :apiParams="apiParams"
                       :address="listing.address"
-                      :latlng="[listing.lat, listing.lng]"
-                      :listings="listing.listings" 
+                      :latlng="[listing.latitude, listing.longitude]"
                       :debug="debug" 
-                      :ref="'mapPopup_' + listing.property_inquiry_number"
+                      :ref="'ref_' + listing.address + '_popup'"
                     />
                 </LPopup>
             </LMarker>
@@ -64,6 +65,7 @@ export default {
     return {debug_circle};
   },
   props: {
+    apiParams: { type: Object, required: true },
     modelValue: { type: Array, required: true },
     radius: {type: Number, required: true, default: 5000},
     listings: {type: Array, required: true, default: () => []},
@@ -73,28 +75,10 @@ export default {
     LMap, LTileLayer, LMarker, LCircle, LPopup, 
     MapPopupListings
   },
-  computed: {
-    groupedListings(){
-      return this.groupListingsByAddress(this.listings);
-    }
-  },
+  
   methods: {
-    groupListingsByAddress(listings){
-        const grouped = {};
-        listings.forEach((listing) => {
-            if(! grouped[listing.address]){
-                grouped[listing.address] = {
-                    address: listing.address,
-                    lat: listing.latitude,
-                    lng: listing.longitude,
-                    top_score_flag: false, // Use this to highlight the top score(s)
-                    listings: []
-                }
-            }
-
-            grouped[listing.address].listings.push(listing);
-        });
-        return grouped;
+    handleMarkerClick(listingId) {
+      this.$refs['ref_' + listingId + '_popup'][0].callApi();
     },
 
     updateCenter(e) {

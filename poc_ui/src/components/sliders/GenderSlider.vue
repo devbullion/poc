@@ -1,12 +1,26 @@
 <template>
 	<div class="slider-container">
-		<div class="labels">
-			<span class="left-label">{{ percentageMale }}% M</span>
-			<span class="right-label">{{ percentageFemale }}% F</span>
-		</div>
-		<input type="range" min="0" max="1" step="0.01" :value="modelValue" @input="updateValue" />
-	</div>
-	
+    <!-- The slider itself -->
+    <div class="control">
+      <input 
+        type="range" 
+        min="0" max="1" step="0.01" 
+        :value="modelValue" 
+        @input="updateValue" 
+        name="slider"
+      />
+    </div>
+
+    <!-- Labels below the slider -->
+    <label class="labels">
+      <span class="left-label">
+        <div class="is-size-6 has-text-weight-medium">{{ percentageMale }}% M</div>
+      </span>
+      <span class="right-label">
+        <div class="is-size-6 has-text-weight-medium">{{ percentageFemale }}% F</div>
+      </span>
+    </label>
+  </div>
 </template>
 
 <script>
@@ -18,12 +32,15 @@ export default {
     }
   },
   computed: {
-	percentageMale(){
-		return (this.modelValue*100).toFixed(0);
-	},
-	percentageFemale(){
-		return (100-this.modelValue*100).toFixed(0);
-	}
+    percentageMale(){
+      return (this.modelValue*100).toFixed(0);
+    },
+    percentageFemale(){
+      return (100-this.modelValue*100).toFixed(0);
+    },
+    tooltipContent() {
+      return `${(this.modelValue * 100).toFixed(0)}%`;
+    }
   },
   methods: {
     updateValue(event) {

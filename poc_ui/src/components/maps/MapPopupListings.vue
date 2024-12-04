@@ -4,9 +4,9 @@
         <div class = "address">{{ this.address }}</div>
         <div class = "address_details">{{ this.latlng }}</div>
         <div class = "address_details">
-            {{ this.listings.length }} 
-            Listing {{this.listings.length > 1 ? 
-                "s  (Max Score: "+this.listings[0].total_score +"/100)" : 
+            {{ this.apiResponse.length }}
+            Listing{{this.apiResponse.length > 1 ? 
+                "s  (Max Score: "+this.apiResponse[0].total_score +"/100)" : 
                 ""
             }}
         </div>
@@ -16,7 +16,7 @@
         <div class="table_container">
             <table>
                 <!-- Loop over the listings-->
-                <div v-for="listing in listings" :key="listing.property_inquiry_number">
+                <div v-for="listing in apiResponse" :key="listing.property_inquiry_number">
                     <!-- Initially visible -->
                     <tr @click="toggleAccordion(listing.property_inquiry_number)">
                         <!-- The Score Icon -->
@@ -53,18 +53,26 @@
                         <td colspan="2">
                             <ListingDetailedView 
                                 :debug="debug" 
+                                :apiParams="apiParams"
                                 :listing="listing"
+                                :listingID="listing.property_inquiry_number"
+
+                                :ref="'ref_'+listing.property_inquiry_number+'_listing_detailed_view'"
                             />
                         </td>
                     </tr>
                 </div>
             </table>
         </div>
+
+        <!-- <div v-if="debug">
+            <b>API Params: </b>{{ this.apiParams }}<br>
+            <b>LatLng: </b>{{ this.latlng }}<br>
+        </div> -->
     </div>
 </template>
 
 <script>
-import {CountUp} from 'countup.js';
 import {
   Chart as ChartJS,
   ArcElement,
@@ -75,15 +83,17 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 import {Doughnut} from 'vue-chartjs';
 
 import ListingDetailedView from './ListingDetailedView.vue';
+import {createApiUrlForAddress, callRestApi} from '../../utils/rest_api_utils.js';
 
 ChartJS.register(CategoryScale, LinearScale, ArcElement, Tooltip, ChartDataLabels);
 
 export default {
     props: {
+        apiParams: { type: Object, required: true },
         address: {type: String, required: true, default: ''},
-        debug: {type: Boolean, required: true, default: false},
         latlng: {type: Array, required: true, default: ()=>[]},
-        listings: {type: Array, required: true, default: ()=>[]},
+
+        debug: {type: Boolean, required: true, default: false},
     },
     components: {
         Doughnut, 
@@ -106,12 +116,24 @@ export default {
             }
             
         };
-        return { donutOptions, dropdownIndex};
+        const apiUrl = null;
+        const apiResponse = [];
+        return { 
+            apiUrl,apiResponse,
+            donutOptions, dropdownIndex};
     },
     methods:{
+        async callApi(){
+            this.apiUrl = createApiUrlForAddress({...this.apiParams, lat: this.latlng[0], lon: this.latlng[1]});
+            this.apiResponse = await callRestApi(this.apiUrl);
+        },
 
+
+        // UI Methods below this line
         toggleAccordion(index) {
             this.dropdownIndex = this.dropdownIndex === index ? null : index;
+            if(this.dropdownIndex != null)
+                this.$refs['ref_'+this.dropdownIndex+'_listing_detailed_view'][0].callApi();
         },
         getDonutData( totalScore){
             return {
@@ -129,18 +151,6 @@ export default {
                     return listing.dist_to_sta_other_mode_time + " Min Bus + " + resultStr;
             }
             return resultStr;
-        },
-        animatePrice( price, element){
-            const countUp = new CountUp(element, price, {
-                prefix: '￥',
-                duration: 2,
-                separator: ',',
-            });
-            if (!countUp.error) {
-                countUp.start();
-            } else {
-                console.error(countUp.error);
-            }
         }
     }
 }
@@ -161,7 +171,7 @@ export default {
     .address {
         font-size: 16px;
         font-weight: bold;
-        /* width: 300px; */
+        width: 300px;
     }
     .address_details {
         font-size: 10px;

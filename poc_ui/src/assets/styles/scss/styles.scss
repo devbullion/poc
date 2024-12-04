@@ -1,1 +1,7 @@
-@use "../../node_modules/bulma/bulma";
+@use "~bulma/bulma";
+
+@use "radios.scss";
+@use "sliders.scss";
+@use "tooltips.scss";
+
+@import 'variables';

@@ -1,0 +1,8 @@
+@import 'variables';
+
+$radio-background-color: $background;
+
+.radios {
+    width: 100%;
+    background-color: $radio-background-color;
+}

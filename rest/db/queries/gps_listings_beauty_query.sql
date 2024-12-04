@@ -24,57 +24,51 @@ WITH listing_distances AS (
       v.* -- The rest of the cols, in case we need them
     FROM listings_pop_radius_view v
   )
-)
+),
 
 -- Filter by the distances
 -- Returns a list of listings within the specific radius
-SELECT 
-	source,
-  property_inquiry_number,
-	distance,
-  longitude, latitude,
-  address, address_kanji,
+scored_listings AS (
+  SELECT 
+    longitude, latitude,
+    address, address_kanji,
 
-  built_age, built_year, built_month,
-  
-  dist_to_sta_walk_time,
-	dist_to_sta_other_mode,
-	dist_to_sta_other_mode_time,
-  
-  price, sq_m, price_per_sq_m,
-  num_seats, tgt_num_seats,
-  total_weighted_pop,
+    ROUND((
+      (price_score * CAST(%(px_score_wt)s AS numeric)) + 
+      (pop_score * CAST(%(pop_score_wt)s AS numeric)) + 
+      (size_score * CAST(%(size_score_wt)s AS numeric))) *100) AS total_score
 
-  pop_score, 
-  size_score,
-  price_score,
+  FROM (
+      SELECT 
+        -- Scores
+        CASE
+          WHEN total_weighted_pop >= tgt_num_seats THEN 1.0
+          ELSE total_weighted_pop / tgt_num_seats
+        END AS pop_score,
 
-  ROUND((
-    (price_score * CAST(%(px_score_wt)s AS numeric)) + 
-    (pop_score * CAST(%(pop_score_wt)s AS numeric)) + 
-    (size_score * CAST(%(size_score_wt)s AS numeric))) *100) AS total_score
+        CASE
+          WHEN abs_size_diff_norm >= 1 THEN 0
+          ELSE 1 - abs_size_diff_norm
+        END AS size_score,
 
-FROM (
-    SELECT 
-      -- Scores
-      CASE
-        WHEN total_weighted_pop >= tgt_num_seats THEN 1.0
-        ELSE total_weighted_pop / tgt_num_seats
-      END AS pop_score,
+        CASE
+          WHEN abs_price_per_sq_m_diff_norm >= 1 THEN 0
+          ELSE 1 - abs_price_per_sq_m_diff_norm
+        END AS price_score,
 
-      CASE
-        WHEN abs_size_diff_norm >= 1 THEN 0
-        ELSE 1 - abs_size_diff_norm
-      END AS size_score,
-
-      CASE
-        WHEN abs_price_per_sq_m_diff_norm >= 1 THEN 0
-        ELSE 1 - abs_price_per_sq_m_diff_norm
-      END AS price_score,
-
-      * -- The rest of the columns, in case we need them
-  FROM listing_distances
+        * -- The rest of the columns, in case we need them
+    FROM listing_distances
+  )
+  WHERE 
+    distance <= CAST(%(dist)s AS NUMERIC) --The dist parameter
 )
-WHERE 
-  distance <= %(dist)s --The dist parameter
-ORDER BY address DESC, total_score DESC;
+
+-- Finally group by the addresses
+SELECT
+  address, address_kanji, 
+  longitude, latitude, 
+  max(total_score) as max_score,
+  COUNT(*) as count
+FROM scored_listings
+GROUP BY address, address_kanji, longitude, latitude
+ORDER BY max_score DESC, address DESC;

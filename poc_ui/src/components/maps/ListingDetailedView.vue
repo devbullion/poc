@@ -4,7 +4,12 @@
             width="100%"
             :data="barData" 
             :options="barOptions" 
+            :ref="'barChart'"
         />
+         <div v-if="debug"> 
+            <b>BarData</b> {{ barData }}<br>
+        </div> 
+        {{ barData }}
     </div>
 </template>
 
@@ -16,26 +21,41 @@ import {
 } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import {Bar} from 'vue-chartjs';
-
+import {createApiUrlForListingDetail, callRestApi} from '../../utils/rest_api_utils.js';
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, ChartDataLabels);
 
 export default {
     props: {
+        apiParams: { type: Object, required: true },
         listing: {type: Object, required: true, default: null},
+        listingID: {type: String, required: true, default: null},
+
         debug: {type: Boolean, required: true, default: false},
     },
     components: {
         Bar,
     },
+    computed:{
+        barData() {
+            var data =[];
+            if(this.apiResponse==null || this.apiResponse.length==0){
+                data= [0,0,0];
+            } else {
+                data = [ 
+                    Math.round(this.apiResponse[0].pop_score*100), 
+                    Math.round(this.apiResponse[0].price_score*100), 
+                    Math.round(this.apiResponse[0].size_score*100),
+                ]
+            }
+
+            return{
+                labels: ['Pop Score', 'Price Score', 'Size Score'],
+                datasets: [{ data: data }]
+            }
+        }
+    },
     data(){
         const fillColor = 'rgb(255,215,0)';
-        const barDataLabels = ['Pop Score', 'Price Score', 'Size Score'];
-        const barDataValues = [ (this.listing.pop_score*100).toFixed(0), (this.listing.price_score*100).toFixed(0), (this.listing.size_score*100).toFixed(0) ];
-
-        const barData = {
-            labels: barDataLabels,
-            datasets: [{ data: barDataValues }]
-        };
         const barOptions = {
             animation:{
                 delay: 150,
@@ -60,8 +80,8 @@ export default {
                         display: false,
                         drawBorder: false,
                     },
-                    max: 140,
-                    ticks: {display: false},
+                    max: 125,
+                    // ticks: {display: false},
                 },
                 y: {
                     grid: {display: false},
@@ -72,16 +92,28 @@ export default {
             },
             skipNull: false,
         };
-        return {barData, barOptions};
+        const apiUrl = null;
+        const apiResponse = [];
+        return {apiUrl, apiResponse, barOptions};
+    },
+    methods:{
+        async callApi(){
+            this.apiUrl = createApiUrlForListingDetail({...this.apiParams, id: this.listingID});
+            this.apiResponse = await callRestApi(this.apiUrl);
+        },
     }
 }
 </script>
 
 <style>
     .listing_detailed_view {
-        width: 200px;
+        width: 100%;
         height: 100px;
 
-        border: 1px solid green
+    }
+
+    Bar{
+        width: 100%;
+        height: 100%;
     }
 </style>

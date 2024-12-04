@@ -5,15 +5,25 @@
       <tr>
         <td>
           <!-- Radio Buttons -->
-          <div>
-            <label><input type="radio" value="beauty" v-model="businessType" />Beauty Salon</label>
-            <label><input type="radio" value="gym" v-model="businessType" />Gym</label>
+          <div class="radios">
+            <label class="radio is-size-6 has-text-weight-medium">
+              <input type="radio" value="beauty" v-model="businessType" checked/>
+              Beauty
+            </label>
+            <label class="radio is-size-6 has-text-weight-medium">
+              <input type="radio" value="gym" v-model="businessType" />
+              Gym
+            </label>
+            <label class="radio is-size-6 has-text-weight-medium">
+              <input type="radio" value="restaurant" v-model="businessType" disabled />
+              Bar
+            </label>
           </div>
 
           <!-- Sliders -->
-          <GenderSlider v-model="genderValue" />
-          <SizeSlider v-model="sizeValue" />
-          <PriceSlider v-model="priceValue" />
+          <div class ="field"><GenderSlider v-model="genderValue" /></div>
+          <div class ="field"><SizeSlider v-model="sizeValue" /></div>
+          <div class ="field"><PriceSlider v-model="priceValue" /></div>
 
           <!-- Status -->
           <p v-if = "debug" >
@@ -26,36 +36,30 @@
         </td>
         <td>
           <!-- Map -->
-          <POCMap v-model="mapLatLng" :radius="mapRadius" :listings="apiResponse" :debug="debug" /> 
+          <POCMap 
+            v-model="mapLatLng" 
+            :radius="mapRadius" 
+            :listings="apiResponse" 
+            :apiParams="apiParams" 
+            debug="debug" 
+          /> 
         </td>
       </tr>
     </table>
-
-    <!-- API Call -->
+  
+    <!-- API Call -->    
     <p v-if="debug">
       <b>API Call:</b> {{ this.apiUrl }}<br>
       <b>API Response:</b> {{ this.apiResponse }}
-    </p> 
-
-    <!-- Table of the API Response -->
-    <div v-if="columns.length > 0 && debug">
-      <table>
-        <thead>
-          <tr><th v-for="(col, index) in columns" :key="index">{{ col.label }}</th></tr>
-        </thead>
-
-        <tbody>
-          <tr v-for="(row, index) in apiResponse" :key="index">
-            <td v-for="(col, colIndex) in columns" :key="colIndex">{{ row[col.field] }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    </p>  
+    
   </div>
 </template>
 
 
 <script>
+import { callRestApi, createApiUrlForListings } from './utils/rest_api_utils';
+
 import POCMap from "./components/maps/POCMap.vue"
 
 import GenderSlider from './components/sliders/GenderSlider.vue';
@@ -69,52 +73,40 @@ export default {
   },
   
   data() {
+    const mapLatLng = [34.6826516, 135.8154434];
+    const mapRadius = 10000;
+
+
     return {
       debug: false, // Change this to false	
-      mapLatLng: [34.6826516, 135.8154434], 
-      mapRadius: 10000,
+      mapLatLng: mapLatLng, 
+      mapRadius: mapRadius,
 
       businessType: "beauty",
-      
       genderValue: 0.5,
       sizeValue: 30,
       priceValue: 5000,
-      
+
       apiUrl: null,
       apiResponse: [],
-      
-      columns: [],
-      rows: []
+      apiParams: {},
     };
   },
   
   methods: {
-    /** Simple method to create the API string */  
-    createApiUrl(){
-      return `https://gold-rush-14804388067.asia-northeast1.run.app/listings?lat=${this.mapLatLng[0]}&lon=${this.mapLatLng[1]}&dist=${this.mapRadius}&m=${this.genderValue}&size=${this.sizeValue}&px=${this.priceValue}&btype=${this.businessType}`;
-    },
-    
     async callApi(){
-      this.apiUrl = this.createApiUrl();
-      
-      try{
-        //console.log("Fetching from API: "+ this.apiUrl);
+      this.updateApiParams();
+      this.apiUrl = createApiUrlForListings({...this.apiParams, lat: this.mapLatLng[0], lon: this.mapLatLng[1]});
+      this.apiResponse = await callRestApi(this.apiUrl);
+    },
 
-        const response = await fetch(this.apiUrl);
-        if(! response.ok) throw new Error('Network Response was not ok', response);
-        const data = await response.json();
-
-        //console.log("Received the data from the API", data);
-        this.apiResponse = data;
-        
-        if(data.length > 0){
-          this. columns = Object.keys(data[0]).map(key => ({
-            label: key,
-            field: key
-          }));
-        }
-      } catch(error) {
-        console.error('Error fetching from the API: ', error);
+    updateApiParams(){
+      this.apiParams ={
+        dist: this.mapRadius,
+        m: this.genderValue,
+        size: this.sizeValue,
+        px: this.priceValue,
+        btype: this.businessType
       }
     }
   },
@@ -133,5 +125,3 @@ export default {
   }
 };
 </script>
-
-<style src="./assets/styles/css/styles.css"></style>

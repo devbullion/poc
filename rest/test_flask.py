@@ -54,7 +54,6 @@ btype_dict = {
 @app.get("/listings")
 @cross_origin()
 def get_listings():
-    # The parameters have to be in this specific order to fit the SQL code
     b_type = request.args.get('btype')
     params = { param: request.args.get(param) for param in ['lon', 'lat', 'dist', 'm', 'size', 'px'] } | btype_dict[b_type]
     
@@ -67,6 +66,35 @@ def get_listings():
     
     return jsonify(dict_results)
 
+@app.get("/address")
+def get_address_listings():
+    '''
+    Get all the listings for a specific address (lat/lon)
+    We need to pass in the other args to calc the score
+    '''
+    b_type = request.args.get('btype')
+    params = {param: request.args.get(param) for param in ['lon', 'lat', 'm', 'size', 'px']} | btype_dict[b_type]
+
+    dict_results = dbutils.run_query_from_file_and_return_dict(
+        f"db/queries/address_listings_query.sql", 
+        params,
+        connection_pool
+    )
+    return jsonify(dict_results)
+
+@app.get("/listing")
+def get_listing():
+    '''
+    Get the details of a specific listing
+    '''
+    b_type = request.args.get('btype')
+    params = {param: request.args.get(param) for param in ['m', 'size', 'px', 'id']} | btype_dict[b_type]
+    dict_results = dbutils.run_query_from_file_and_return_dict(
+        f"db/queries/listing_detail_query.sql", 
+        params,
+        connection_pool
+    )
+    return jsonify(dict_results)
 
 if __name__ == "__main__":
     # Use the PORT environment variable or default to 8080

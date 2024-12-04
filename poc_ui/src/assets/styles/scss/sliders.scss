@@ -1,0 +1,97 @@
+/**
+ * Slider Labels
+ */
+@import 'variables';
+$slider-background: $background;
+
+.slider-container {
+  background-color: $slider-background;
+  width: 100%; /* Set container width */
+  max-width: 200px; /* You can change this to the desired slider width */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: green solid 1px;
+}
+
+.slider-container .control{
+  width: 95%; /* Set container width */
+  max-width: 200px; /* You can change this to the desired slider width */
+}
+
+.labels {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  //border: red solid 1px;
+}
+
+.left-label {
+  text-align: left;
+}
+
+.right-label {
+  text-align: right;
+}
+  
+
+/**
+* The slider itself
+*/
+$slider-color: $form-primary-color;
+
+$slider-track-height: 0.45rem;
+$slider-track-radius: 25px;
+
+$slider-thumb-height: calc($slider-track-height * 2.75);
+$slider-thumb-width: $slider-thumb-height;
+$slider-thumb-border-width: 0.25rem;
+
+
+/* Clear the slider of all defaults */
+input[type="range"] {
+    width: 100%;
+    
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 5px;
+    //border: 1px yellow solid;
+}
+
+/**
+* Track styling
+*/
+input[type="range"]::-webkit-slider-runnable-track {
+    height: $slider-track-height;
+    border-radius: $slider-track-radius;
+    background: $slider-color;
+}
+input[type="range"]::-moz-range-track {
+    height: $slider-track-height;
+    border-radius: $slider-track-radius;
+    background: $slider-color;
+}
+
+/* Thumb styling */
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; 
+    appearance: none;
+    width: $slider-thumb-width; 
+    height: $slider-thumb-height;
+    background: $slider-background;
+    border: $slider-thumb-border-width solid $slider-color; 
+    border-radius: 50%; 
+    position: relative; 
+
+    top: calc( $slider-track-height/2 - $slider-thumb-height/2); /* Center thumb vertically */
+}
+  
+input[type="range"]::-moz-range-thumb {
+    width: $slider-thumb-width; 
+    height: $slider-thumb-height;
+    background: $slider-background;
+    border: $slider-thumb-border-width solid $slider-color; 
+    border-radius: 50%; 
+    position: relative; 
+ }
