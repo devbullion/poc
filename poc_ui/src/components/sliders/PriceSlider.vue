@@ -14,24 +14,29 @@
     <!-- Labels below the slider -->
     <label class="labels">
       <span class="left-label">
-        <div class="is-size-6 has-text-weight-medium">Affordable</div>
+        <div class="is-size-6 has-text-weight-medium">
+          {{ getLangText(lang, {"en":"Affordable","ja":""}) }}
+        </div>
       </span>
       <span class="right-label">
-        <div class="is-size-6 has-text-weight-medium">Luxury</div>
+        <div class="is-size-6 has-text-weight-medium">
+          {{ getLangText(lang, {"en":"Luxury","ja":""}) }}
+        </div>
       </span>
     </label>
   </div>
 </template>
 
 <script>
+import { getLangText } from '../../utils/lang_utils';
 export default {
   props: {
-    modelValue: {
-      type: Number,
-      required: true
-    }
+    debug: {type: Boolean, required: false, default: false},
+    lang: {type: String, required: false, default: "en"},
+    modelValue: {type: Number, required: true}
   },
   methods: {
+    getLangText,
     updateValue(event) {
       //console.log("Slider updated to: "+event.target.value +" and emitted");
       this.$emit('update:modelValue', parseFloat(event.target.value));

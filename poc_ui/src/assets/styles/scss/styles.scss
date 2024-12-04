@@ -1,7 +1,9 @@
 @use "~bulma/bulma";
 
+@use "map.scss";
 @use "radios.scss";
 @use "sliders.scss";
 @use "tooltips.scss";
 
 @import 'variables';
+@import 'layout';

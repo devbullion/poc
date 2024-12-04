@@ -3,26 +3,32 @@
  */
 @import 'variables';
 $slider-background: $background;
+$slider-border-radius: $form-border-radius;
 
 .slider-container {
   background-color: $slider-background;
+  border-radius: $slider-border-radius;
+  
   width: 100%; /* Set container width */
-  max-width: 200px; /* You can change this to the desired slider width */
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: green solid 1px;
+  justify-content: center;
+  //border: green solid 1px;
 }
 
 .slider-container .control{
-  width: 95%; /* Set container width */
-  max-width: 200px; /* You can change this to the desired slider width */
+  width: 90%; /* Set container width */
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .labels {
   display: flex;
   justify-content: space-between;
   width: 100%;
+  padding-bottom: $layout-padding;
   //border: red solid 1px;
 }
 

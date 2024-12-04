@@ -1,0 +1,35 @@
+@import 'variables';
+
+$sidebar-background-color: $background;
+$sidebar-border-radius: $layout-border-radius;
+
+.layout-container{
+    background-color: transparent;
+    padding: $layout-padding $layout-padding $layout-padding $layout-padding;
+}
+
+.sidebar-container{
+    min-width: calc(4.5 * $radio-img-size);
+    max-width:  calc(6 * $radio-img-size);
+    background-color: $sidebar-background-color;
+    border-radius: $sidebar-border-radius;
+
+    justify-content: center; //horizontal
+    align-items: center; //vertical
+    text-align: center;
+
+    padding: 0 $layout-padding 0 $layout-padding;
+}
+
+.sidebar-container .field{
+    width: 100%;
+    justify-content: center; //horizontal
+    align-items: center; //vertical
+    text-align: center;
+}
+
+.map-container{
+    background-color: transparent;
+    border-radius: $sidebar-border-radius;
+    padding: 0 $layout-padding 0 $layout-padding;
+}
