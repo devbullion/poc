@@ -58,7 +58,7 @@ export default {
         const fillColor = 'rgb(255,215,0)';
         const barOptions = {
             animation:{
-                delay: 150,
+                delay: 350,
                 duration: 2000,
                 easing: 'easeInOutQuart',
             },

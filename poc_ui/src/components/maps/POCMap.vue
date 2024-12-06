@@ -29,6 +29,7 @@
         :latlng="[listing.latitude, listing.longitude]"
         width="480px" height="1000px"
         @click="handleMarkerClick(listing.address)"
+        class="map-popup"
       >
         <!-- We set autoPan to false due to the recursion -->
         <LPopup 

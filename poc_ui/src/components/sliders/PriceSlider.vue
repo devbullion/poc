@@ -29,6 +29,7 @@
 
 <script>
 import { getLangText } from '../../utils/lang_utils';
+
 export default {
   props: {
     debug: {type: Boolean, required: false, default: false},

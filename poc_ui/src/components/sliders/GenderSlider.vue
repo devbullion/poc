@@ -1,5 +1,6 @@
 <template>
 	<div class="slider-container">
+    
     <!-- The slider itself -->
     <div class="control">
       <input 
@@ -24,11 +25,13 @@
         </div>
       </span>
     </label>
+
   </div>
 </template>
 
 <script>
 import { getLangText } from '../../utils/lang_utils';
+
 export default {
   props: {
     debug: {type: Boolean, required: false, default: false},

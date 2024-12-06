@@ -1,40 +1,47 @@
 <template>
     <div>
-        <!-- Title Area -->
-        <div class = "address">{{ this.address }}</div>
-        <div class = "address_details">{{ this.latlng }}</div>
-        <div class = "address_details">
-            {{ this.apiResponse.length }}
-            Listing{{this.apiResponse.length > 1 ? 
-                "s  (Max Score: "+this.apiResponse[0].total_score +"/100)" : 
-                ""
-            }}
-        </div>
-        <br>
 
+        <!-- Title Area -->
+        <div class="popup-title-area block">
+            <div class="is-size-4 has-text-left has-text-weight-semibold">{{ this.address }}</div>
+            <div class="is-size-7 has-text-left has-text-weight-light">
+                {{ this.latlng }}
+            </div>
+            <div class="is-size-7 has-text-left has-text-weight-normal">
+                {{ this.apiResponse.length + " Listing" + (this.apiResponse.length > 1 ? "s" : "") + " at this Address" }}
+            </div>
+        </div>
+
+        
+        
         <!-- List Area -->
-        <div class="table_container">
+        <div class="popup-listings-container">
             <table>
                 <!-- Loop over the listings-->
                 <div v-for="listing in apiResponse" :key="listing.property_inquiry_number">
+
                     <!-- Initially visible -->
                     <tr @click="toggleAccordion(listing.property_inquiry_number)">
                         <!-- The Score Icon -->
                         <td>
                             <div class = "donut_container">
-                                <div class="donut_inner">{{ listing.total_score }}</div>
-                                <div class="donut_listing_type">For Rent</div>
+                                <div class="donut_inner is-size-5 has-text-weight-semibold">
+                                    {{ listing.total_score }}
+                                </div>
+                                <div class="donut_listing_type has-text-weight-normal">
+                                    For Rent
+                                </div>
                                 <Doughnut :data="getDonutData(listing.total_score)" :options="donutOptions"/>
                             </div>
                         </td>
 
                         <!-- The Details -->
                         <td>
-                            <div class="listing_detail_line_1">￥{{listing.price ? listing.price.toLocaleString() : "N/A" }} / {{ listing.sq_m + "㎡"}}</div>
-                            <div class="listing_detail_line_2">
+                            <div class="listing-title is-size-5 has-text-weight-semibold">￥{{listing.price ? listing.price.toLocaleString() : "N/A" }} / {{ listing.sq_m + "㎡"}}</div>
+                            <div class="listing-details is-size-7">
                                 <b>Built In:</b> {{ listing.built_month }}/{{ listing.built_year }} ({{ listing.built_age }} Yrs Old)
                             </div>
-                            <div class="listing_detail_line_2">
+                            <div class="listing-details is-size-7">
                                 <b>Dist to Sta:</b> {{ getDisToStaText(listing) }}
                             </div>
                         </td>
@@ -42,7 +49,7 @@
 
                     <tr>
                         <td colspan="2">
-                            <button class="accordion-button" @click.stop="toggleAccordion(listing.property_inquiry_number)">
+                            <button class="accordion-button is-size-7 has-text-weight-light" @click.stop="toggleAccordion(listing.property_inquiry_number)">
                                 <span :class="['arrow', { active: (this.dropdownIndex != null && this.dropdownIndex===listing.property_inquiry_number) }]">&#9654;</span>
                             </button>
                         </td>
@@ -64,11 +71,6 @@
                 </div>
             </table>
         </div>
-
-        <!-- <div v-if="debug">
-            <b>API Params: </b>{{ this.apiParams }}<br>
-            <b>LatLng: </b>{{ this.latlng }}<br>
-        </div> -->
     </div>
 </template>
 
@@ -110,11 +112,12 @@ export default {
                 easing: 'easeInOutQuart',
             },
             backgroundColor: [fillColor, fillerColor],
+            borderWidth: 0, 
+            borderColor: 'transparent',
             plugins : {
                 datalabels: {display: false},
                 tooltips: {display: false}
-            }
-            
+            },
         };
         const apiUrl = null;
         const apiResponse = [];
@@ -155,118 +158,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-    tr{
-        width: 100%;
-    }
-    td{
-        padding: 0;
-    } 
-
-    .address {
-        font-size: 16px;
-        font-weight: bold;
-        width: 300px;
-    }
-    .address_details {
-        font-size: 10px;
-        font-weight: light;
-    }
-    .table_container {
-        width: 100%;
-        max-height: 180px;
-        overflow: auto;
-    }
-
-    .donut_container {
-        position: relative;
-        width: 50px;
-        height: 50px;
-        /* border: 1px solid red; */
-        padding: 0;
-    }
-
-    .donut_inner {
-        width: 100%;
-        height: 100%;
-
-        position: absolute;
-        top: 0;
-        left: 0;
-        line-height: 50px;
-        text-align: center;
-        font-size: 18px;
-        font-weight: bold;
-    }
-
-    .donut_listing_type {
-        font-size: 6px;
-        color: white;
-        font-weight: bold;
-        text-align: left;
-        background-color: red;
-        border-radius: 2px;
-
-        position: absolute;
-        top: 5%; 
-        left: 0;
-    }
-
-    .listing_detail_line_1 {
-        font-size: 14px;
-        font-weight: bold;
-    }
-
-    .listing_detail_line_2 {
-        font-size: 10px;
-        font-weight: normal;
-        padding-left: 10px;
-    }
-
-    .accordion {
-        margin: 20px;
-        font-family: Arial, sans-serif;
-    }
-
-    .accordion-button {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        border: none;
-        padding: 0 0 0 10px;
-        cursor: pointer;
-        font-size: 16px;
-        outline: none;
-        width: 100%;
-    }
-
-    .accordion-button .arrow {
-        display: inline-block;
-        transition: transform 0.3s ease;
-        font-size: 10px;
-    }
-    .accordion-button .arrow.active {
-        transform: rotate(90deg);
-    }
-
-    .accordion-content {
-        display: none;
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.3s ease, padding 0.3s ease;
-        padding: 0;
-    }
-
-    .accordion-content.open {
-        display: block;
-        max-height: 100%;
-        overflow: auto;
-        transition: max-height 0.3s ease, padding 0.3s ease;
-        padding: 0;
-    }
-</style>

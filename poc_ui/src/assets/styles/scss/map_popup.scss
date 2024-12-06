@@ -1,0 +1,122 @@
+
+$popup-background: $background;
+
+// .leaflet-popup-content{
+//     background-color: $popup-background;
+// }
+
+.leaflet-popup-content-wrapper{
+    background-color: $popup-background;
+}
+
+.leaflet-popup-tip{
+    background-color: $popup-background;
+}
+
+.popup-title-area{
+    min-width: 20rem;
+}
+
+
+.popup-listings-container {
+    width: 100%;
+    min-height: 7rem;
+    max-height: 14rem;
+    overflow: auto;
+}
+
+.popup-listings-container tr{
+    cursor: pointer;
+}
+/**
+* Score
+**/
+$popup-donut-size: 4.5rem;
+$popup-donut-listing-type-font-size: 0.6rem;
+.donut_container {
+    position: relative;
+    width: $popup-donut-size;
+    height: $popup-donut-size;
+    padding: 0;
+}
+
+.donut_inner {
+    width: 100%;
+    height: 100%;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    line-height: $popup-donut-size;
+    text-align: center;
+}
+
+.donut_listing_type {
+    font-size: $popup-donut-listing-type-font-size;
+    color: white;
+    text-align: left;
+    background-color: red;
+    border-radius: calc($popup-donut-listing-type-font-size / 3);
+
+    position: absolute;
+    top: 5%; 
+    left: 0;
+}
+
+.listing-title {
+    padding: 0;
+    overflow-x: auto;
+}
+.listing-details{
+    padding-left: 0.25rem;
+}
+
+
+/**
+* Accordion
+**/
+
+.accordion {
+    margin: 1rem;
+}
+
+.accordion-button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border: none;
+    outline: none;
+
+    padding-left: 0.75rem;
+    opacity: 0.5;
+    color: lightgrey;
+
+    cursor: pointer;
+}
+
+.accordion-button .arrow {
+    display: inline-block;
+    transition: transform 0.3s ease;
+    font-size: 10px;
+}
+.accordion-button .arrow.active {
+    transform: rotate(90deg);
+}
+
+.accordion-content {
+    display: none;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    padding: 0;
+}
+
+.accordion-content.open {
+    display: block;
+    max-height: 100%;
+    overflow: auto;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    padding: 0;
+}
