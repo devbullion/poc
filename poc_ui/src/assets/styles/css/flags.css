@@ -1,0 +1,21 @@
+/**
+* We originally used the flag-icon-css library to display flags in the application.
+* However, we decided to manually download the SVG's and use them in the application.
+* This is because the flag-icon-css library was adding a lot of unnecessary flags to the application (not ideal for GCP)
+**/
+
+.flag-icon {
+    width: 1.333em;
+    height: 1em;
+    background-size: contain;
+    background-repeat: no-repeat;
+    display: inline-block;
+}
+  
+.flag-icon-us {
+    background-image: url('@/assets/images/icons/flags/us.svg');
+}
+  
+.flag-icon-jp {
+    background-image: url('@/assets/images/icons/flags/jp.svg');
+}

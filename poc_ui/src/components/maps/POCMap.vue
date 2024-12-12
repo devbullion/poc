@@ -41,7 +41,7 @@
             :apiParams="apiParams"
             :address="listing.address"
             :latlng="[listing.latitude, listing.longitude]"
-            :debug="debug" 
+            :debug="debug" :lang="lang"
             :ref="'ref_' + listing.address + '_popup'"
           />
         </LPopup>
@@ -70,7 +70,8 @@ export default {
     modelValue: { type: Array, required: true },
     radius: {type: Number, required: true, default: 5000},
     listings: {type: Array, required: true, default: () => []},
-    debug: {type: Boolean, required: true, default: false},
+    lang: {type: String, default: 'en'},
+    debug: {type: Boolean, default: false},
   },
   components: {
     LMap, LTileLayer, LMarker, LPopup, LCircle,

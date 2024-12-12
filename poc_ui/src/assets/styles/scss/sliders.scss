@@ -13,7 +13,6 @@ $slider-border-radius: $form-border-radius;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   //border: green solid 1px;
 }
 
@@ -24,6 +23,11 @@ $slider-border-radius: $form-border-radius;
   text-align: center;
 }
 
+.slider-title-label{
+  text-align: left !important;
+  width: 100%;
+}
+
 .labels {
   display: flex;
   justify-content: space-between;
@@ -32,11 +36,11 @@ $slider-border-radius: $form-border-radius;
   //border: red solid 1px;
 }
 
-.left-label {
+.slider-left-label {
   text-align: left;
 }
 
-.right-label {
+.slider-right-label {
   text-align: right;
 }
   

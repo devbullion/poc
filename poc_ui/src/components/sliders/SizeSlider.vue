@@ -1,5 +1,20 @@
 <template>
   <div class="slider-container">
+
+    <!-- The Title -->
+    <div class="slider-title-label is-size-6 has-text-weight-semibold">
+      {{ 
+        getLangText(
+          lang, 
+          {
+            "en": "How do you want the interior to feel?",
+            "ja": "室内に求める雰囲気" 
+          }
+        ) 
+      }}
+    </div>
+
+
     <!-- The slider itself -->
     <div class="control">
       <input 
@@ -14,13 +29,13 @@
     <!-- Labels below the slider -->
     <label class="labels">
       <span class="left-label">
-        <div class="is-size-6 has-text-weight-medium">
-          {{ getLangText(lang, {"en":"Cozy","ja":""}) }}
+        <div class="is-size-7 has-text-weight-medium">
+          {{ getLangText(lang, {"en":"Cozy","ja":"こぢんまりしている"}) }}
         </div>
       </span>
       <span class="right-label">
-        <div class="is-size-6 has-text-weight-medium">
-          {{ getLangText(lang, {"en":"Spacious","ja":""}) }}
+        <div class="is-size-7 has-text-weight-medium">
+          {{ getLangText(lang, {"en":"Spacious","ja":"広々としている"}) }}
         </div>
       </span>
     </label>

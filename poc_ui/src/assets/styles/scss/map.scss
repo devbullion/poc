@@ -8,7 +8,7 @@
 .leaflet-container {
     /* Setting the aspect ratio to 1:1 means the height = width*/
     aspect-ratio: 1 / 1;
-    width: 75% !important;
+    width: 100% !important;
 
     border: solid $background 0.5rem;
     border-radius: $layout-border-radius;

@@ -1,6 +1,18 @@
 <template>
 	<div class="slider-container">
-    
+    <!-- The Title -->
+    <div class="slider-title-label slider-title-label is-size-6 has-text-weight-semibold">
+      {{ 
+        getLangText(
+          lang, 
+          {
+            "en": "Who do you think your customers will be?",
+            "ja": "ベースとなる顧客層" 
+          }
+        ) 
+      }}
+    </div>
+
     <!-- The slider itself -->
     <div class="control">
       <input 
@@ -14,13 +26,13 @@
 
     <!-- Labels below the slider -->
     <label class="labels">
-      <span class="left-label">
-        <div class="is-size-6 has-text-weight-medium">
+      <span class="slider-left-label">
+        <div class="is-size-7 has-text-weight-medium">
           {{ percentageMale +"% " + getLangText(lang, {"en":"M","ja":"男性"}) }}
         </div>
       </span>
-      <span class="right-label">
-        <div class="is-size-6 has-text-weight-medium">
+      <span class="slider-right-label">
+        <div class="is-size-7 has-text-weight-medium">
           {{ percentageFemale +"% " + getLangText(lang, {"en":"F","ja":"女性"}) }}
         </div>
       </span>

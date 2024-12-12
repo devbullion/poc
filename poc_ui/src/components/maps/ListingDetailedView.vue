@@ -22,6 +22,8 @@ import {
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import {Bar} from 'vue-chartjs';
 import {createApiUrlForListingDetail, callRestApi} from '../../utils/rest_api_utils.js';
+import { getLangText } from '../../utils/lang_utils';
+
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, ChartDataLabels);
 
 export default {
@@ -29,7 +31,7 @@ export default {
         apiParams: { type: Object, required: true },
         listing: {type: Object, required: true, default: null},
         listingID: {type: String, required: true, default: null},
-
+        lang: {type: String, required: true},
         debug: {type: Boolean, required: true, default: false},
     },
     components: {
@@ -49,7 +51,20 @@ export default {
             }
 
             return{
-                labels: ['Pop Score', 'Price Score', 'Size Score'],
+                labels: [
+                    getLangText(this.lang, {
+                        "en": 'Pop Score',
+                        "ja": '人口スコア'
+                    }), 
+                    getLangText(this.lang, {
+                        "en": 'Price Score',
+                        "ja": '価格スコア'
+                    }), 
+                    getLangText(this.lang, {
+                        "en": 'Size Score',
+                        "ja": 'サイズスコア'
+                    }), 
+                ],
                 datasets: [{ data: data }]
             }
         }

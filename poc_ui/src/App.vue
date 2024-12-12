@@ -1,8 +1,49 @@
 <template>
   <div class="box">
+    <!-- Header -->
+    <div class="header-container">
+      <div>
+        <div class="title">Debullion</div>
+        <div class="subtitle">Proof of Concept</div>
+      </div>
+
+      <!-- Dropdown -->
+      <div class="dropdown">
+        <button class="dropbtn is-size-7">
+          {{ getLangText(this.lang,
+            {
+              "en": "English (US)",
+              "ja": "日本語"
+            }) +" ▼"
+          }}
+        </button>
+        <div class="dropdown-content">
+          <a href="#" class="is-size-7" @click="lang = 'en'">
+            <span class="flag-icon flag-icon-us"></span> English (US)
+          </a>
+          <a href="#" class="is-size-7" @click="lang = 'ja'">
+            <span class="flag-icon flag-icon-jp"></span> 日本語
+          </a>
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- The columns-->
     <div class="columns is-mobile layout-container">
       <!-- Sidebar column -->
       <div class="column is-one-quarter sidebar-container">
+        <div class="block">
+          <label class = "sidebar-title-container title is-5">
+            {{ getLangText(
+              this.lang, 
+              {
+                "en":"What kind of business do you want to open?",
+                "ja":"開業をご希望のビジネス"
+              }) 
+            }}
+          </label>
+        </div>
 
         <!-- Radio Buttons -->
         <div class="radios">
@@ -30,7 +71,7 @@
 
           <label class="radio is-size-6 has-text-weight-medium">
             <div class="is-size-7 radio-text">
-              {{ getLangText(this.lang,{"en":"Bar","ja":"バー"}) }}
+              {{ getLangText(this.lang,{"en":"Bar","ja":"居酒屋・バー"}) }}
             </div>
             <input type="radio" value="bar" v-model="businessType" alt="bar" disabled />
             <img 
@@ -48,8 +89,13 @@
             :debug="debug"
           />
         </div>
-        <div class ="field"><SizeSlider v-model="sizeValue" /></div>
-        <div class ="field"><PriceSlider v-model="priceValue" /></div>
+        <div class ="field">
+          <SizeSlider 
+            v-model="sizeValue" 
+            :lang="lang" :debug="debug"
+            />
+        </div>
+        <div class ="field"><PriceSlider v-model="priceValue" :lang="lang" :debug="debug" /></div>
 
         <!-- Status -->
         <p v-if = "debug" >
@@ -68,6 +114,7 @@
           :radius="mapRadius" 
           :listings="apiResponse" 
           :apiParams="apiParams" 
+          :lang="lang"
           :debug="debug" 
         /> 
       </div>

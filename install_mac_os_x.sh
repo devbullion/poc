@@ -19,7 +19,8 @@ npm install vuex
 # Install Bulma
 npm install -D sass sass-loader
 npm install bulma
-npm install v-tooltip
+
+npm install flag-icon-css
 
 # For the Maps
 npm install vue3-leaflet leaflet

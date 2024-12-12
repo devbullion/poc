@@ -1,5 +1,6 @@
 @use "~bulma/bulma";
 
+@use "lang_dropdown.scss";
 @use "map.scss";
 @use "radios.scss";
 @use "sliders.scss";
@@ -7,3 +8,4 @@
 
 @import 'variables';
 @import 'layout';
+@import '../css/flags.css';
