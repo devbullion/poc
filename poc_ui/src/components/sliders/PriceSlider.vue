@@ -7,7 +7,7 @@
           lang, 
           {
             "en": "How would you describe your brand?",
-            "ja": "ブランドイメージ" 
+            "ja": "コンセプト (ブランド) はどうしたいですか？" 
           }
         ) 
       }}
@@ -28,12 +28,12 @@
     <label class="labels">
       <span class="left-label">
         <div class="is-size-7 has-text-weight-medium">
-          {{ getLangText(lang, {"en":"Affordable","ja":"手頃でリーズナブル"}) }}
+          {{ getLangText(lang, {"en":"Affordable","ja":"手頃な価格"}) }}
         </div>
       </span>
       <span class="right-label">
         <div class="is-size-7 has-text-weight-medium">
-          {{ getLangText(lang, {"en":"Luxury","ja":"豪華でハイクオリティ"}) }}
+          {{ getLangText(lang, {"en":"Luxury","ja":"贅沢"}) }}
         </div>
       </span>
     </label>

@@ -1,17 +1,20 @@
 @import 'variables';
 
+
 $header-background-color: $background;
 $sidebar-background-color: $background;
 $sidebar-border-radius: $layout-border-radius;
 
+$layout-height: 85vh;
 
+$map-width: 75vw;
+$map-height: $layout-height;
 
 .header-container{
     background-color: $header-background-color;
     border-radius: $sidebar-border-radius;
 
     width: 100%;
-    height:100%;
     min-height: 50px;
     align-items: center;
 
@@ -38,8 +41,8 @@ $sidebar-border-radius: $layout-border-radius;
 }
 
 .sidebar-container{
-    min-width: calc(4.5 * $radio-img-size);
-    max-width:  calc(6 * $radio-img-size);
+    min-width: calc(5 * $radio-img-size);
+    max-width: calc(6 * $radio-img-size);
     background-color: $sidebar-background-color;
     border-radius: $sidebar-border-radius;
 
@@ -66,4 +69,5 @@ $sidebar-border-radius: $layout-border-radius;
     background-color: transparent;
     border-radius: $sidebar-border-radius;
     padding: 0 $layout-padding 0 $layout-padding;
+    height: $layout-height;
 }

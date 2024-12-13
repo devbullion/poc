@@ -7,7 +7,7 @@
           lang, 
           {
             "en": "Who do you think your customers will be?",
-            "ja": "ベースとなる顧客層" 
+            "ja": "あなたの顧客は誰にしたいですか？" 
           }
         ) 
       }}

@@ -8,7 +8,7 @@
           lang, 
           {
             "en": "How do you want the interior to feel?",
-            "ja": "室内に求める雰囲気" 
+            "ja": "インテリアはどんな雰囲気にしたいですか？" 
           }
         ) 
       }}
@@ -29,13 +29,18 @@
     <!-- Labels below the slider -->
     <label class="labels">
       <span class="left-label">
-        <div class="is-size-7 has-text-weight-medium">
-          {{ getLangText(lang, {"en":"Cozy","ja":"こぢんまりしている"}) }}
+        <div class="is-size-7 has-text-weight-medium">{{ 
+          getLangText(lang, 
+          {
+            "en":"Cozy",
+            "ja":"居心地の良い"
+          }) 
+        }}
         </div>
       </span>
       <span class="right-label">
         <div class="is-size-7 has-text-weight-medium">
-          {{ getLangText(lang, {"en":"Spacious","ja":"広々としている"}) }}
+          {{ getLangText(lang, {"en": "Spacious", "ja": "広々とした"}) }}
         </div>
       </span>
     </label>

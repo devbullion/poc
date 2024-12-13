@@ -1,10 +1,10 @@
 <template>
-  <div class="box">
+  
+  <div class="layout-box box">
     <!-- Header -->
     <div class="header-container">
       <div>
-        <div class="title">Debullion</div>
-        <div class="subtitle">Proof of Concept</div>
+        <div class="title is-size-6">DeBullion</div>
       </div>
 
       <!-- Dropdown -->
@@ -38,8 +38,8 @@
             {{ getLangText(
               this.lang, 
               {
-                "en":"What kind of business do you want to open?",
-                "ja":"開業をご希望のビジネス"
+                "en": "What kind of business do you want to open?",
+                "ja": "どんなビジネスをしますか？"
               }) 
             }}
           </label>
@@ -52,10 +52,12 @@
               {{ getLangText(this.lang,{"en":"Beauty Salon","ja":"美容室"}) }}
             </div>
             <input type="radio" value="beauty" v-model="businessType" checked/>
-            <img 
-              src="./assets/images/icons/icon_beauty_black.png" 
-              alt="beauty salon"
-            >
+            <div class="radio-img-container">
+              <img 
+                src="./assets/images/icons/icon_beauty_black.png" 
+                alt="beauty salon"
+              >
+            </div>
           </label>
           
           <label class="radio is-size-6 has-text-weight-medium">
@@ -63,21 +65,26 @@
               {{ getLangText(this.lang,{"en":"Gym","ja":"ジム"}) }}
             </div>
             <input type="radio" value="gym" v-model="businessType" />
-            <img 
-              src="./assets/images/icons/icon_gym_black.png" 
-              alt="gym"
-            >
+            <div class="radio-img-container">
+              <img 
+                src="./assets/images/icons/icon_gym_black.png" 
+                alt="gym"
+              >
+          </div>
           </label>
 
           <label class="radio is-size-6 has-text-weight-medium">
-            <div class="is-size-7 radio-text">
+            <div class="is-size-7 radio-text disabled-text">
               {{ getLangText(this.lang,{"en":"Bar","ja":"居酒屋・バー"}) }}
             </div>
             <input type="radio" value="bar" v-model="businessType" alt="bar" disabled />
-            <img 
-              src="./assets/images/icons/icon_bar_black.png"
-              alt="bar"
-            >
+            <div class="radio-img-container">
+              <span class="radio-img-text-overlay">Coming Soon</span>
+              <img 
+                src="./assets/images/icons/icon_bar_black.png"
+                alt="bar"
+              >
+            </div>
           </label>
         </div>
 
@@ -121,6 +128,7 @@
 
     </div>
   </div>
+
   <!-- API Call -->    
   <p v-if="debug">
     <b>API Call:</b> {{ this.apiUrl }}<br>
@@ -149,7 +157,7 @@ export default {
 
     return {
       debug: false, // Change this to false	
-      lang: "en",
+      lang: "ja",
       mapLatLng: mapLatLng, 
       mapRadius: mapRadius,
 

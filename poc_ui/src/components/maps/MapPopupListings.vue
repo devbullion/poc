@@ -1,9 +1,8 @@
 <template>
-    <div>
-
+    <div class="popup-container">
         <!-- Title Area -->
         <div class="popup-title-area block">
-            <div class="is-size-4 has-text-left has-text-weight-semibold">{{ this.address }}</div>
+            <div class="is-size-4 has-text-left has-text-weight-semibold popup-title">{{ this.address }}</div>
             <div class="is-size-7 has-text-left has-text-weight-light">
                 {{ this.latlng }}
             </div>
@@ -11,14 +10,13 @@
                 getLangText(this.lang,
                 {
                     "en": this.apiResponse.length + " Listing" + (this.apiResponse.length > 1 ? "s" : "") + " at this Address" ,
-                    "ja": ""
+                    "ja": this.apiResponse.length+"物件"
                 }
             )   
             }}
             </div>
         </div>
 
-        
         
         <!-- List Area -->
         <div class="popup-listings-container">
@@ -34,7 +32,7 @@
                                 <div class="donut_inner is-size-5 has-text-weight-semibold">
                                     {{ listing.total_score }}
                                 </div>
-                                <div class="donut_listing_type has-text-weight-normal">
+                                <div class="donut_listing_type has-text-weight-semibold">
                                     {{getLangText(this.lang, {"en": "For Rent","ja": "賃貸"})}}
                                 </div>
                                 <Doughnut :data="getDonutData(listing.total_score)" :options="donutOptions"/>
@@ -60,12 +58,8 @@
                                 
                                 {{ getDisToStaText(listing) }}
                             </div>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td colspan="2">
-                            <button class="accordion-button is-size-7 has-text-weight-light" @click.stop="toggleAccordion(listing.property_inquiry_number)">
+                            <!-- The accordion button -->
+                            <button class="listing-details accordion-button is-size-7 has-text-weight-light" @click.stop="toggleAccordion(listing.property_inquiry_number)">
                                 <span :class="['arrow', { active: (this.dropdownIndex != null && this.dropdownIndex===listing.property_inquiry_number) }]">&#9654;</span>
                             </button>
                         </td>
@@ -165,12 +159,18 @@ export default {
         },
 
         getDisToStaText( listing){
-            var resultStr = listing.dist_to_sta_walk_time + "Min Walk";
+            var resultStr = getLangText(this.lang, {
+                "en": listing.dist_to_sta_walk_time + "Min Walk",
+                "ja": "徒歩"+listing.dist_to_sta_walk_time+"分"
+            });
 
             // If the mode is not just walking
             if( listing.dist_to_sta_other_mode){
                 if(listing.dist_to_sta_other_mode == "バス")
-                    return listing.dist_to_sta_other_mode_time + " Min Bus + " + resultStr;
+                    resultStr = getLangText(this.lang,{
+                        "en": listing.dist_to_sta_other_mode_time + " Min Bus + " + resultStr,
+                        "ja": "バス" + listing.dist_to_sta_other_mode_time + "分 + " + resultStr
+                    });
             }
             return resultStr;
         }
