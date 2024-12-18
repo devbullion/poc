@@ -31,35 +31,6 @@ $radio-border-radius: $form-border-radius;
     align-items: center; //vertical
 }
 
-[type=radio] + img {
-    cursor: pointer;
-    outline: 2px solid $radio-unchecked-border-color;
-    border-radius: $radio-border-radius;
-    opacity: 0.75;
-
-    width: $radio-img-size;
-    height: $radio-img-size;
-}
-
-[type=radio]:checked + img {
-    outline: 2px solid $radio-checked-border-color;
-    border-radius: $radio-border-radius;
-    opacity: 1;
-
-    width: $radio-img-size;
-    height: $radio-img-size;
-}
-
-[type=radio]:disabled + img {
-    border-radius: $radio-border-radius;
-
-    width: $radio-img-size;
-    height: $radio-img-size;
-
-    opacity: 0.5;
-    background-color: rgba(128, 128, 128, 1);
-}
-
 [type=radio] + .radio-img-container {
     cursor: pointer;
     outline: 2px solid $radio-unchecked-border-color;
@@ -73,14 +44,13 @@ $radio-border-radius: $form-border-radius;
     display: inline-block;
 }
 
-[type=radio]:disabled + .radio-img-container {
+[type=radio]:checked + .radio-img-container {
+    outline: 2px solid $radio-checked-border-color;
     border-radius: $radio-border-radius;
+    opacity: 1;
 
     width: $radio-img-size;
     height: $radio-img-size;
-
-    opacity: 0.5;
-    background-color: rgba(128, 128, 128, 1);
 }
 
 [type=radio]:disabled + .radio-img-container {
@@ -90,7 +60,7 @@ $radio-border-radius: $form-border-radius;
     height: $radio-img-size;
 
     opacity: 0.5;
-    background-color: rgba(128, 128, 128, 1);
+    //background-color: rgba(128, 128, 128, 1);
 }
 
 .radio-img-text-overlay{

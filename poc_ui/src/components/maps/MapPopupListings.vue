@@ -2,11 +2,12 @@
     <div class="popup-container">
         <!-- Title Area -->
         <div class="popup-title-area block">
+            <div class="popup-title-area-background"></div>
             <div class="is-size-4 has-text-left has-text-weight-semibold popup-title">{{ this.address }}</div>
-            <div class="is-size-7 has-text-left has-text-weight-light">
+            <div class="is-size-7 has-text-left has-text-weight-light popup-title">
                 {{ this.latlng }}
             </div>
-            <div class="is-size-7 has-text-left has-text-weight-normal">{{ 
+            <div class="is-size-7 has-text-left has-text-weight-normal popup-title">{{ 
                 getLangText(this.lang,
                 {
                     "en": this.apiResponse.length + " Listing" + (this.apiResponse.length > 1 ? "s" : "") + " at this Address" ,

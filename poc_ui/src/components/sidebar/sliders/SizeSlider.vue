@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { getLangText } from '../../utils/lang_utils';
+import { getLangText } from '../../../utils/lang_utils';
 
 export default {
   props: {

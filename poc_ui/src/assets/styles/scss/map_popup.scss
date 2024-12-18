@@ -1,15 +1,15 @@
+@import 'variables';
 
 $popup-background: white;
 $popup-width: 30rem;
-$popup-content-width: calc($popup-width*0.85);
+$popup-content-width: calc($popup-width*0.9);
 
 $popup-height: 21rem;
 $popup-min-height: calc($popup-height/3);
 
-// .leaflet-popup-content{
-//     background-color: $popup-background;
-// }
-
+/**
+* These are built-in to the leaflet library
+**/
 .leaflet-popup-content-wrapper{
     background-color: $popup-background;
     width: $popup-width;
@@ -32,15 +32,40 @@ $popup-min-height: calc($popup-height/3);
 /**
 * Title Area of the popup
 **/
+.popup-container {
+    width: $popup-content-width; // Ensure the popup container spans the full width
+    position: relative;
+}
 
 .popup-title-area{
     width: 100%;
+    position:relative;
+
+    padding: calc($layout-padding/2) 0 calc($layout-border-radius/2) 0;
+    //background-color: $background;
+}
+
+.popup-title-area  .popup-title-area-background {
+    position: absolute;
+    top: 0;
+    left: -5.1%; // Offset the left padding
+    width: 105%; // Extend the width to include the right padding
+    height: 100%;
+
+    background-color: $background; 
+    border-top-right-radius: $layout-border-radius;
+    border-bottom-right-radius: $layout-border-radius;
+    z-index: 0; // Ensure it is behind the content
 }
 
 .popup-title-area .popup-title{
     width: 100%;
     overflow-x: auto;
     white-space: nowrap;
+    background: transparent;
+    position: relative; 
+    color: black;
+    z-index: 10;
 }
 
 /**

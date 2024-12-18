@@ -35,3 +35,5 @@ npm install countup.js
 npm update
 npm run build-css
 npm run serve
+
+chmod +x poc_ui/deploy_website.sh

@@ -10,12 +10,14 @@ $layout-height: 85vh;
 $map-width: 75vw;
 $map-height: $layout-height;
 
+$header-min-height: 50px;
+
 .header-container{
     background-color: $header-background-color;
     border-radius: $sidebar-border-radius;
 
     width: 100%;
-    min-height: 50px;
+    min-height: $header-min-height;
     align-items: center;
 
     display: flex;
@@ -23,6 +25,10 @@ $map-height: $layout-height;
     width: 100%;
 
     padding: $layout-padding;
+}
+.header-container .logo {
+    max-width: 100%;
+    height: 100%;
 }
 
 .header-container .title {
