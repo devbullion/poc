@@ -5,6 +5,7 @@
     ref="map"
     :zoom="14"
     :center="modelValue"
+    style="height: 100%; width: 100%;"
   >
     <!-- The Map Tile -->
     <LTileLayer 
@@ -13,6 +14,9 @@
       name="OpenStreetMap"
     />
     
+    <!-- Add Zoom Control -->
+    <LControlZoom position="bottomright" />
+
     <!-- The radius (for debug purposes only) -->
     <LCircle 
       ref="debug_circle"
@@ -52,7 +56,7 @@
 </template>
 
 <script>
-import { LMap, LTileLayer, LCircle, LMarker, LPopup } from 'vue3-leaflet';
+import { LMap, LTileLayer, LCircle, LMarker, LPopup, LControlZoom } from 'vue3-leaflet';
 import {ref} from 'vue';
 import 'leaflet/dist/leaflet.css';
 
@@ -74,7 +78,7 @@ export default {
     debug: {type: Boolean, default: false},
   },
   components: {
-    LMap, LTileLayer, LMarker, LPopup, LCircle,
+    LMap, LTileLayer, LMarker, LPopup, LCircle, LControlZoom,
     MapPopupListings
   },
   

@@ -1,4 +1,3 @@
-@import "variables";
 @import "layout";
 @import "map_popup.scss";
 
@@ -12,5 +11,4 @@
 
     border: solid $background 0.5rem;
     border-radius: $layout-border-radius;
-    //border-radius: 50%;
 }

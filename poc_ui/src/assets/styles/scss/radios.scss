@@ -5,11 +5,15 @@ $radio-unchecked-border-color: transparent;
 $radio-checked-border-color: darkslategray;
 $radio-border-radius: $form-border-radius;
 
+$radio-overlay-background-color: rgba(255, 255, 255, 0.6);
+$radio-overlay-font-color: black;
+
+
 .radios {
     width: 100%;
     background-color: transparent;
     border-radius: $radio-border-radius;
-    padding: 0 $layout-padding calc($layout-padding*3) $layout-padding;
+    padding: 0 $layout-padding 0 $layout-padding;
 
     text-align: center;
     justify-content: center; //horizontal
@@ -59,21 +63,22 @@ $radio-border-radius: $form-border-radius;
     width: $radio-img-size;
     height: $radio-img-size;
 
-    opacity: 0.5;
+    opacity: 0.5;  // Dull the image if disabled
     //background-color: rgba(128, 128, 128, 1);
 }
 
 .radio-img-text-overlay{
+    width: 100%;
+    border-radius: $radio-border-radius;
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%); // Center the text over the image
 
-    color: black;
-    background-color: rgba(255, 255, 255, 0.5);
+    color: $radio-overlay-font-color;
+    background-color: $radio-overlay-background-color;
+
     font-size: $overlay-font-size;
     font-weight: bold;
-    width: 95%;
-    border-radius: $radio-border-radius;
-    padding:0;
+    padding: 0;
 }

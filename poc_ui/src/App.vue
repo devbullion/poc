@@ -153,7 +153,7 @@ export default {
         
         {value: "juku", label: { en: 'Cram School', ja: '学習塾' }, disabled: true},
         {value: "parking", label: { en: 'Parking', ja: '駐車場' }, disabled: true},
-        {value: "gas_station", label: { en: 'Gas Station', ja: 'ガスステー' }, disabled: true},
+        {value: "gas_station", label: { en: 'Gas Station', ja: 'ガソスタ' }, disabled: true},
         {value: "cleaning", label: { en: 'Dry Cleaning', ja: 'クリーニング' }, disabled: true},
         
         {value: "laundromat", label: { en: 'Laundromat', ja: 'コインランドリー' }, disabled: true},

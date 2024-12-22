@@ -1,16 +1,20 @@
 <template>
     <label class="radio is-size-6 has-text-weight-medium">
+        <!-- Text above the radio button -->
         <div class="is-size-7 radio-text">
             {{ getLangText(this.lang, this.labelDict) }}
         </div>
 
+        <!-- The Radio button -->
         <input 
             type="radio" 
             :value="value" 
-            :checked="modelValue === value"
             @change="$emit('update:modelValue', value)"
+
+            :checked="modelValue === value"
             :disabled="disabled"
         />
+        <!-- The image for the radio button -->
         <div class="radio-img-container">
             <span v-if="disabled" class="radio-img-text-overlay">Coming Soon</span>
             <img 
