@@ -28,10 +28,10 @@
     
 
     <!-- The columns-->
-    <div class="columns is-mobile layout-container">
+    <div class="columns layout-container">
       <!-- Sidebar column -->
-      <div class="column is-one-quarter sidebar-container">
-        <div class="block">
+      <div class="column is-12-mobile is-4-desktop sidebar-container">
+        <!-- <div class="block"> -->
           <label class = "sidebar-title-container title is-5">
             {{ getLangText(
               this.lang, 
@@ -41,10 +41,10 @@
               }) 
             }}
           </label>
-        </div>
+        <!-- </div> -->
 
         <!-- Radio Buttons -->
-        <div class="radios">
+        <div class="radio-container is-mobile-height is-tablet-height">
           <RadioButton v-for="button in radioButtons"
             :key="button.value"
             :value="button.value" 
@@ -83,7 +83,7 @@
       </div>
 
       <!-- Map column -->
-      <div class="column map-container">
+      <div class="column is-12-mobile is-8-tablet map-container is-mobile">
         <POCMap 
           v-model="mapLatLng" 
           :radius="mapRadius" 

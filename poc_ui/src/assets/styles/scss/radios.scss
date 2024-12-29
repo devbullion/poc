@@ -1,5 +1,9 @@
 @import 'variables';
 
+@import "~bulma/sass/utilities/initial-variables";
+@import "~bulma/sass/utilities/functions";
+@import "~bulma/sass/utilities/derived-variables";
+
 $radio-background-color: $background;
 $radio-unchecked-border-color: transparent;
 $radio-checked-border-color: darkslategray;
@@ -9,17 +13,52 @@ $radio-overlay-background-color: rgba(255, 255, 255, 0.6);
 $radio-overlay-font-color: black;
 
 
-.radios {
+.radio-container {
     width: 100%;
     background-color: transparent;
-    border-radius: $radio-border-radius;
-    padding: 0 $layout-padding 0 $layout-padding;
 
     text-align: center;
-    justify-content: center; //horizontal
     align-items: center; //vertical
-}
 
+    display: flex;
+    overflow-y: auto;
+    -webkit-overflow-scrolling-y: auto;
+    
+    // For mobile, we want to make it one long-scrollable row
+    @media (max-width: $tablet) { &.is-mobile-height {
+        max-height: 20vh;
+
+        // Always show the horizontal scrollbar
+        overflow-x: scroll;
+        -webkit-overflow-scrolling-x: scroll;
+    }}
+
+    // For tablet and above, we want to make it a flex grid
+    @media (min-width: $tablet) { &.is-tablet-height {
+        max-height: 40vh;
+        flex-wrap: wrap;
+
+        // Only show the horizontal scrollbar if needed
+        overflow-x: auto;
+        -webkit-overflow-scrolling-x: auto;
+    }}
+
+    &::-webkit-scrollbar {
+        height: $sidebar-scrollbar-width; // Height of the horizontal scrollbar
+        width: $sidebar-scrollbar-width;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: darkgrey;
+        border-radius: 10px;
+    }
+    &::-webkit-scrollbar-track {
+        background-color: grey;
+        border-radius: 10px;
+    }
+
+    margin-bottom: calc(2*$layout-padding);
+}
 [type=radio] {
     position: absolute;
     opacity: 0;
@@ -33,6 +72,15 @@ $radio-overlay-font-color: black;
     text-align: center;
     justify-content: center; //horizontal
     align-items: center; //vertical
+}
+
+.small-radio-text{
+    padding-bottom: $layout-padding;
+
+    text-align: center;
+    justify-content: center; //horizontal
+    align-items: center; //vertical
+    font-size: 0.6rem;
 }
 
 [type=radio] + .radio-img-container {

@@ -1,7 +1,10 @@
 <template>
-    <label class="radio is-size-6 has-text-weight-medium">
+    <label class="radio column is-size-6 has-text-weight-medium">
         <!-- Text above the radio button -->
-        <div class="is-size-7 radio-text">
+        <div v-if="getLangText(this.lang, this.labelDict).length <= 5" class="is-size-7 radio-text">
+            {{ getLangText(this.lang, this.labelDict) }}
+        </div>
+        <div v-else class="small-radio-text">
             {{ getLangText(this.lang, this.labelDict) }}
         </div>
 
