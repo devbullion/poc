@@ -7,6 +7,7 @@
 $header-background-color: $background;
 $sidebar-background-color: $background;
 $sidebar-border-radius: $layout-border-radius;
+$sidebar-z-index: 500; // Sidebar should be above the map
 
 $layout-height: 85vh;
 
@@ -15,19 +16,28 @@ $map-height: $layout-height;
 
 $header-min-height: 50px;
 
+.layout-box{
+    background-color: white;
+    z-index: calc($sidebar-z-index + 5);
+    position: relative;
+}
+
 .header-container{
     background-color: $header-background-color;
     border-radius: $sidebar-border-radius;
+    border: 3px solid white;
 
     width: 100%;
     min-height: $header-min-height;
-    align-items: center;
 
+    align-items: center;
     display: flex;
     justify-content: space-between;
-    width: 100%;
 
     padding: $layout-padding;
+
+    z-index: calc($sidebar-z-index + 10);
+    position: relative;
 }
 .header-container .logo {
     max-width: 100%;
@@ -45,8 +55,12 @@ $header-min-height: 50px;
 }
 
 .layout-container{
-    background-color: transparent;
-    margin: $layout-padding;
+    background-color: white;
+    z-index: calc($sidebar-z-index + 5);
+    margin-left: $layout-padding;
+    margin-right: $layout-padding;
+    position: relative;
+    overflow: hidden;
 }
 
 .sidebar-container{
@@ -58,6 +72,26 @@ $header-min-height: 50px;
     justify-content: center; //horizontal
     align-items: center; //vertical
     text-align: center;
+    padding: calc($layout-padding * 2);
+
+    // All of the below is for the swipe animation
+    z-index: $sidebar-z-index;
+    @media (max-width: $tablet) { 
+        position: absolute;
+        top: calc($layout-padding*2); 
+        left: 0;
+        max-width: 100%;
+
+        transition: transform 0.3s ease-in-out;
+        transform: translateY(0); // Initially open
+        background-color: linear-gradient(to bottom, rgba($sidebar-background-color,1),rgba($sidebar-background-color,0.9))
+    }
+    @media (min-width: $tablet) {
+        height: 100%;
+    }
+}
+.sidebar-container.closed {
+    transform: translateY(-90%); // Closed state
 }
 
 .sidebar-container .field{
@@ -66,6 +100,16 @@ $header-min-height: 50px;
     align-items: center; //vertical
     text-align: center;
 }
+.sidebar-container .swipe-handle{
+    width: 100%;
+    cursor: grab;
+
+    @media (min-width: $tablet) {
+        &::after {
+            content: ''; // Hide text on mobile
+        }
+    }
+}
 
 .sidebar-title-container{
     width: 100%;
@@ -73,6 +117,7 @@ $header-min-height: 50px;
 }
 
 .map-container{
+    position: relative;
     background-color: transparent;
     border-radius: $sidebar-border-radius;
     // We want left and right padding to be 0 on mobile
@@ -84,7 +129,7 @@ $header-min-height: 50px;
         }
     }
     @media (min-width: $tablet) {
-        padding: 0 $layout-padding 0 $layout-padding ;
+        padding: $layout-padding ;
         height: $layout-height;
     }
     

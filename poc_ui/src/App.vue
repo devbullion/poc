@@ -26,60 +26,13 @@
       </div>
     </div>
     
-
     <!-- The columns-->
     <div class="columns layout-container">
       <!-- Sidebar column -->
-      <div class="column is-12-mobile is-4-desktop sidebar-container">
-        <!-- <div class="block"> -->
-          <label class = "sidebar-title-container title is-5">
-            {{ getLangText(
-              this.lang, 
-              {
-                "en": "What kind of business do you want to open?",
-                "ja": "どんなビジネスをしますか？"
-              }) 
-            }}
-          </label>
-        <!-- </div> -->
-
-        <!-- Radio Buttons -->
-        <div class="radio-container is-mobile-height is-tablet-height">
-          <RadioButton v-for="button in radioButtons"
-            :key="button.value"
-            :value="button.value" 
-            v-model="businessType" 
-
-            :lang="lang" 
-            :labelDict="button.label"
-            :disabled="button.disabled"
-          />
-        </div>
-
-        <!-- Sliders -->
-        <div class ="field">
-          <GenderSlider 
-            v-model="genderValue" 
-            :lang="lang"
-            :debug="debug"
-          />
-        </div>
-        <div class ="field">
-          <SizeSlider 
-            v-model="sizeValue" 
-            :lang="lang" :debug="debug"
-            />
-        </div>
-        <div class ="field"><PriceSlider v-model="priceValue" :lang="lang" :debug="debug" /></div>
-
-        <!-- Status -->
-        <p v-if = "debug" >
-          Gender Value: {{ (genderValue*100).toFixed(0) }}% Male<br>
-          Size Value: {{ sizeValue }}㎡<br>
-          Price Value: ￥{{ priceValue.toLocaleString() }}<br>
-          Lat, Lng: {{ mapLatLng }}<br>
-          Radius: {{mapRadius}}m
-        </p>
+      <div 
+        class="column is-12-mobile is-4-desktop is-mobile"
+      >
+        <SidebarComponent v-model:modelValue="sidebarData" :lang="lang" :debug="debug"/>
       </div>
 
       <!-- Map column -->
@@ -99,6 +52,7 @@
 
   <!-- API Call -->    
   <p v-if="debug">
+    {{ this.sidebarData }}<br>
     <b>API Call:</b> {{ this.apiUrl }}<br>
     <b>API Response:</b> {{ this.apiResponse }}
   </p> 
@@ -109,16 +63,11 @@
 import { callRestApi, createApiUrlForListings } from './utils/rest_api_utils';
 import { getLangText } from './utils/lang_utils';
 import POCMap from "./components/maps/POCMap.vue";
-import GenderSlider from './components/sidebar/sliders/GenderSlider.vue';
-import SizeSlider from './components/sidebar/sliders/SizeSlider.vue';
-import PriceSlider from './components/sidebar/sliders/PriceSlider.vue';
-import RadioButton from './components/sidebar/BusinessTypeRadioButton.vue';
+import SidebarComponent from './components/sidebar/SidebarComponent.vue';
 
 export default {
   components: {
-    POCMap,
-    RadioButton,
-    GenderSlider, PriceSlider, SizeSlider
+    POCMap, SidebarComponent,
   },
   
   data() {
@@ -131,10 +80,12 @@ export default {
       mapLatLng: mapLatLng, 
       mapRadius: mapRadius,
 
-      businessType: "beauty",
-      genderValue: 0.5,
-      sizeValue: 30,
-      priceValue: 5000,
+      sidebarData: {
+        businessType: "beauty",
+        genderValue: 0.5,
+        sizeValue: 30,
+        priceValue: 5000,
+      },
 
       apiUrl: null,
       apiResponse: [],
@@ -178,12 +129,13 @@ export default {
     },
 
     updateApiParams(){
+      //console.log("Updating API Params", this.sidebarData);
       this.apiParams ={
         dist: this.mapRadius,
-        m: this.genderValue,
-        size: this.sizeValue,
-        px: this.priceValue,
-        btype: this.businessType
+        m: this.sidebarData.genderValue,
+        size: this.sidebarData.sizeValue,
+        px: this.sidebarData.priceValue,
+        btype: this.sidebarData.businessType
       }
     }
   },
@@ -193,10 +145,10 @@ export default {
   },
   
   watch: {
-    genderValue: 'callApi',
-    sizeValue: 'callApi',
-    priceValue: 'callApi',
-    businessType: 'callApi',
+    sidebarData: { 
+      handler:'callApi',
+      deep: true
+    },
 
     mapLatLng: 'callApi'
   }
