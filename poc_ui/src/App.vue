@@ -1,6 +1,6 @@
 <template>
   
-  <div class="layout-box box">
+  <!--div class="layout-box box"-->
     <!-- Header -->
     <div class="header-container">
       <img src="./assets/images/icons/dbc/logo_horizontal_black.png" alt="DeBullion Logo" class="logo">
@@ -29,26 +29,26 @@
     <!-- The columns-->
     <div class="columns layout-container">
       <!-- Sidebar column -->
-      <div 
-        class="column is-12-mobile is-4-desktop is-mobile"
-      >
+      <div class="column is-12-mobile is-4-desktop is-mobile">
         <SidebarComponent v-model:modelValue="sidebarData" :lang="lang" :debug="debug"/>
       </div>
 
       <!-- Map column -->
-      <div class="column is-12-mobile is-8-tablet map-container is-mobile">
-        <POCMap 
-          v-model="mapLatLng" 
-          :radius="mapRadius" 
-          :listings="apiResponse" 
-          :apiParams="apiParams" 
-          :lang="lang"
-          :debug="debug" 
-        /> 
+      <div class="column is-12-mobile is-8-tablet is-mobile">
+        <div class="map-container">
+          <POCMap 
+            v-model="mapLatLng" 
+            :radius="mapRadius" 
+            :listings="apiResponse" 
+            :apiParams="apiParams" 
+            :lang="lang"
+            :debug="debug" 
+          /> 
+      </div>
       </div>
 
     </div>
-  </div>
+  <!--/div-->
 
   <!-- API Call -->    
   <p v-if="debug">

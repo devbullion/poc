@@ -27,7 +27,7 @@ $header-min-height: 50px;
     border-radius: $sidebar-border-radius;
     border: 3px solid white;
 
-    width: 100%;
+    width: calc(100% - 2*$layout-padding);
     min-height: $header-min-height;
 
     align-items: center;
@@ -35,6 +35,7 @@ $header-min-height: 50px;
     justify-content: space-between;
 
     padding: $layout-padding;
+    margin: 0 $layout-padding 0 $layout-padding;
 
     z-index: calc($sidebar-z-index + 10);
     position: relative;
@@ -72,26 +73,36 @@ $header-min-height: 50px;
     justify-content: center; //horizontal
     align-items: center; //vertical
     text-align: center;
-    padding: calc($layout-padding * 2);
+    padding: calc($layout-padding*2);
+    margin: calc($layout-padding*2) 0 0 0;
 
     // All of the below is for the swipe animation
     z-index: $sidebar-z-index;
     @media (max-width: $tablet) { 
         position: absolute;
         top: calc($layout-padding*2); 
-        left: 0;
-        max-width: 100%;
+        left: $layout-padding;
+        max-width: calc(100% - 4*$layout-padding);
 
         transition: transform 0.3s ease-in-out;
         transform: translateY(0); // Initially open
-        background-color: linear-gradient(to bottom, rgba($sidebar-background-color,1),rgba($sidebar-background-color,0.9))
+        background-color: linear-gradient(
+                                to bottom, 
+                                rgba($sidebar-background-color,1),
+                                rgba($sidebar-background-color,0.9));
+        
+        margin-left: $layout-padding;
+        margin-right: $layout-padding;
     }
     @media (min-width: $tablet) {
-        height: 100%;
+        height: calc($layout-height - $layout-padding);
+        position: relative;
+
+        margin: $layout-padding 0 $layout-padding 0;
     }
 }
 .sidebar-container.closed {
-    transform: translateY(-90%); // Closed state
+    transform: translateY(-92%); // Closed state
 }
 
 .sidebar-container .field{
@@ -129,7 +140,11 @@ $header-min-height: 50px;
         }
     }
     @media (min-width: $tablet) {
-        padding: $layout-padding ;
+        padding: 
+            $layout-padding //top
+            $layout-padding //right
+            0 //bottom
+            $layout-padding; //left
         height: $layout-height;
     }
     
