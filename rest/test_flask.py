@@ -9,10 +9,16 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
 from db import dbutils
 import os
+import logging
 
 app = Flask(__name__)
 CORS(app)
-print(f"NAME: {__name__}")
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
+app.logger.handlers = logger.handlers
+app.logger.setLevel(logger.level)
+
+logger.info(f"NAME: {__name__}")
 
 host="10.26.208.4" # Private IP of the PostgreSQL server
 dbname="jp_estat_2020"
@@ -38,14 +44,20 @@ btype_dict = {
         'pop_radius': 10,
         'pop_score_wt': 0.30,
         'size_score_wt': 0.30,
-        'px_score_wt': 0.40
+        'px_score_wt': 0.40,
+
+        'business_days': 250, # number of days open
+        'target_clients_per_day': 4.5, # number of clients per day
     },
     
     'gym':{
         'pop_radius': 2,
         'pop_score_wt': 0.50,
         'size_score_wt': 0.40,
-        'px_score_wt': 0.10
+        'px_score_wt': 0.10,
+
+        'business_days': 200, # number of days open (A gym is usually open 350 days, but there is a lot of overlap with members)
+        'target_clients_per_day': 1, # number of clients per day (A gym is usually open 350 days, but there is a lot of overlap with members)
     }
 }
 
@@ -57,9 +69,15 @@ def get_listings():
     b_type = request.args.get('btype')
     params = { param: request.args.get(param) for param in ['lon', 'lat', 'dist', 'm', 'size', 'px'] } | btype_dict[b_type]
     
+    query_file = "db/queries/gps_listings_query.sql"
+
+    logger.info(f"Business type: {b_type}")
+    logger.info(f"Using query file: {query_file}")
+    logger.info(f"Parameters: {params}")
+
     # Run the SQL code to get the results
     dict_results = dbutils.run_query_from_file_and_return_dict(
-        f"db/queries/gps_listings_{b_type}_query.sql", 
+        query_file, 
         params,
         connection_pool
     )

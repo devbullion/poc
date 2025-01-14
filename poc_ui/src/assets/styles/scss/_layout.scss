@@ -7,7 +7,7 @@
 $header-background-color: $background;
 $sidebar-background-color: $background;
 $sidebar-border-radius: $layout-border-radius;
-$sidebar-z-index: 500; // Sidebar should be above the map
+$sidebar-z-index: 500; // Sidebar should be above the map in mobile view
 
 $layout-height: 85vh;
 
@@ -81,8 +81,8 @@ $header-min-height: 50px;
     @media (max-width: $tablet) { 
         position: absolute;
         top: calc($layout-padding*2); 
-        left: $layout-padding;
-        max-width: calc(100% - 4*$layout-padding);
+        left: $layout-padding/2;
+        max-width: calc(100% - 3*$layout-padding);
 
         transition: transform 0.3s ease-in-out;
         transform: translateY(0); // Initially open

@@ -26,7 +26,7 @@
     />
     
     <!-- Loop over the listings and put markers-->
-    <template v-for="listing in listings" :key="'key_'+listing.address">
+    <template v-for="listing in listings" :key="'key_'+listing.address+'_'+this.apiParams['btype']">
       <LMarker
         v-if="listing!=null && listing.latitude!=null && listing.longitude!=null"
         :key="'key_'+listing.address+'_Lmarker'"
@@ -34,6 +34,7 @@
         width="480px" height="1000px"
         @click="handleMarkerClick(listing.address)"
         class="map-popup"
+        ref="markers"
       >
         <!-- We set autoPan to false due to the recursion -->
         <LPopup 
@@ -51,7 +52,6 @@
         </LPopup>
       </LMarker>
     </template>
-    
   </LMap>
 </template>
 
@@ -65,8 +65,10 @@ import MapPopupListings from './MapPopupListings.vue';
 export default {
   setup(){
     const debug_circle = ref(null);
+
     return {debug_circle};
-  },created() {
+  },
+  created() {
     console.log('debug prop value:', this.debug);
   },
   props: {
@@ -81,10 +83,10 @@ export default {
     LMap, LTileLayer, LMarker, LPopup, LCircle, LControlZoom,
     MapPopupListings
   },
-  
   methods: {
     handleMarkerClick(listingId) {
       this.$refs['ref_' + listingId + '_popup'][0].callApi();
+      console.log("Clicked on marker: "+listingId);
     },
 
     updateCenter(e) {
@@ -97,15 +99,14 @@ export default {
 
         // Update the circle as needed
         if(this.debug){
-            const oldCircleLatLng = this.debug_circle.getLatLng();
-            if(oldCircleLatLng != newLatLng ){
-                console.log("Updating Circle center to "+newLatLng);
-                this.debug_circle.setLatLng(newLatLng);
-            }
+          const oldCircleLatLng = this.debug_circle.getLatLng();
+          if(oldCircleLatLng != newLatLng ){
+              console.log("Updating Circle center to "+newLatLng);
+              this.debug_circle.setLatLng(newLatLng);
+          }
         }
       }
     },
   },
-
 };
 </script>

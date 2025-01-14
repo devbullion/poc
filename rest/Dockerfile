@@ -11,9 +11,9 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the application code to the container
-COPY . /rest_api
+COPY . .
 
-# Expose port 5000 (the default port for Flask)
+# Expose port (5000 is the default port for Flask)
 EXPOSE 8080
 
 # Set environment variables for Flask (optional)
@@ -21,4 +21,4 @@ ENV FLASK_APP=test_flask.py
 ENV FLASK_ENV=production
 
 # Run the application
-CMD ["python", "test_flask.py", "--host=0.0.0.0"]
+CMD ["flask", "run", "--host=0.0.0.0", "--port=8080"]

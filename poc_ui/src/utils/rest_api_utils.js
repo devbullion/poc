@@ -7,6 +7,7 @@ export function createApiUrlForListings(params) {
 export function createApiUrlForAddress(params) {
   const baseUrl = 'https://gold-rush-14804388067.asia-northeast1.run.app/address';
   const queryParams = new URLSearchParams(params).toString();
+  console.log("HELLO: "+`${baseUrl}?${queryParams}`);
   return `${baseUrl}?${queryParams}`;
 }
 

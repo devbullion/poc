@@ -81,6 +81,11 @@
                     </tr>
                 </div>
             </table>
+            <div v-if="debug">
+                API Params: {{ apiParams }}{{ latlng }}<br>
+                API URL: {{apiUrl}}<br>
+                API Response: {{apiResponse}}
+            </div>
         </div>
     </div>
 </template>
@@ -141,8 +146,11 @@ export default {
     methods:{
         getLangText,
         async callApi(){
+            console.log("Calling API for address: ", this.address, {...this.apiParams, lat: this.latlng[0], lon: this.latlng[1]});
             this.apiUrl = createApiUrlForAddress({...this.apiParams, lat: this.latlng[0], lon: this.latlng[1]});
+            console.log("API URL: ", this.apiUrl);
             this.apiResponse = await callRestApi(this.apiUrl);
+            console.log("API Response: ", this.apiResponse);
         },
 
 
