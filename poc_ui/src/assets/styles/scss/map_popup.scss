@@ -22,13 +22,6 @@ $popup-min-height: calc($popup-height/3);
     background-color: $popup-background;
 }
 
-
-// .popup-container{
-//     width: $popup-width;
-//     height: $popup-height;
-// }
-
-
 /**
 * Title Area of the popup
 **/
@@ -77,6 +70,22 @@ $popup-min-height: calc($popup-height/3);
 
     max-height: calc($popup-min-height*2);
     overflow-y: auto;
+    -webkit-overflow-scrolling-y: auto;
+
+    &::-webkit-scrollbar {
+        height: $sidebar-scrollbar-width; // Height of the horizontal scrollbar
+        width: $sidebar-scrollbar-width;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: darkgrey;
+        border-radius: 10px;
+    }
+    &::-webkit-scrollbar-track {
+        background-color: grey;
+        border-radius: 10px;
+    }
+
 }
 
 .popup-listings-container tr{
@@ -89,6 +98,20 @@ $popup-min-height: calc($popup-height/3);
 **/
 $popup-donut-size: 4.5rem;
 $popup-donut-listing-type-font-size: $overlay-font-size;
+
+.score-td{
+    width: $popup-donut-size;
+    height: $popup-donut-size;
+    padding: 0;
+    margin: 0;
+}
+
+.details-td{
+    width: calc($popup-content-width - $popup-donut-size - 2*$layout-padding);
+    padding: 0;
+    margin: 0;
+}
+
 
 .donut_container {
     position: relative;
@@ -118,6 +141,15 @@ $popup-donut-listing-type-font-size: $overlay-font-size;
     top: 5%; 
     left: 0;
 }
+
+.details-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-grow: 1;
+}
+
 
 .listing-title {
     padding: 0;
@@ -198,7 +230,7 @@ $popup-donut-listing-type-font-size: $overlay-font-size;
     gap: $layout-padding;
 }
 
-.listing_detailed_view .button-container .btn {
+ .btn {
     padding: 0.5rem 1rem;
     background-color: #007bff;
     color: white;
@@ -207,8 +239,10 @@ $popup-donut-listing-type-font-size: $overlay-font-size;
     cursor: pointer;
     text-align: center;
     text-decoration: none; /* Remove underline for anchor button */
+
+    transition: transform 0.3s ease;
 }
 
-.listing_detailed_view .button-container .btn:hover {
+.btn:hover {
     background-color: #0056b3;
 }

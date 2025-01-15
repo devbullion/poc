@@ -68,8 +68,8 @@ btype_dict = {
 def get_listings():
     b_type = request.args.get('btype')
     params = { param: request.args.get(param) for param in ['lon', 'lat', 'dist', 'm', 'size', 'px'] } | btype_dict[b_type]
-    
-    query_file = "db/queries/gps_listings_query.sql"
+    pop_radius = str(btype_dict[b_type]['pop_radius'])+'km'
+    query_file = f"db/queries/gps_listings_{pop_radius}_query.sql"
 
     logger.info(f"Business type: {b_type}")
     logger.info(f"Using query file: {query_file}")
@@ -93,8 +93,11 @@ def get_address_listings():
     b_type = request.args.get('btype')
     params = {param: request.args.get(param) for param in ['lon', 'lat', 'm', 'size', 'px']} | btype_dict[b_type]
 
+    pop_radius = str(btype_dict[b_type]['pop_radius'])+'km'
+    query_file = f"db/queries/address_listings_{pop_radius}_query.sql"
+
     dict_results = dbutils.run_query_from_file_and_return_dict(
-        f"db/queries/address_listings_query.sql", 
+        query_file, 
         params,
         connection_pool
     )
@@ -107,8 +110,12 @@ def get_listing():
     '''
     b_type = request.args.get('btype')
     params = {param: request.args.get(param) for param in ['m', 'size', 'px', 'id']} | btype_dict[b_type]
+    
+    pop_radius = str(btype_dict[b_type]['pop_radius'])+'km'
+    query_file = f"db/queries/addrelisting_detail_{pop_radius}_query.sql"
+
     dict_results = dbutils.run_query_from_file_and_return_dict(
-        f"db/queries/listing_detail_query.sql", 
+        query_file, 
         params,
         connection_pool
     )

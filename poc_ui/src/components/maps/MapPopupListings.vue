@@ -26,9 +26,9 @@
                 <div v-for="listing in apiResponse" :key="listing.property_inquiry_number">
 
                     <!-- Initially visible -->
-                    <tr @click="toggleAccordion(listing.property_inquiry_number)">
+                    <tr>
                         <!-- The Score Icon -->
-                        <td>
+                        <td class="score-td">
                             <div class = "donut_container">
                                 <div class="donut_inner is-size-5 has-text-weight-semibold">
                                     {{ listing.total_score }}
@@ -41,28 +41,40 @@
                         </td>
 
                         <!-- The Details -->
-                        <td>
-                            <div class="listing-title is-size-5 has-text-weight-semibold">￥{{listing.price ? listing.price.toLocaleString() : "N/A" }} / {{ listing.sq_m + "㎡"}}</div>
-                            <div class="listing-details is-size-7">
-                                <b>{{ getLangText(this.lang, {"en": "Built In","ja": "築年月 (築年)"})}}:</b>
+                        <td class="details-td">
+                            <div class="details-container">
+                                <div>
+                                    <div class="listing-title is-size-5 has-text-weight-semibold">￥{{listing.price ? listing.price.toLocaleString() : "N/A" }} / {{ listing.sq_m + "㎡"}}</div>
+                                    <div class="listing-details is-size-7">
+                                        <b>{{ getLangText(this.lang, {"en": "Built In","ja": "築年月 (築年)"})}}:</b>
 
-                                {{getLangText(
-                                    this.lang, 
-                                    {
-                                        "en":listing.built_month +"/"+ listing.built_year +" ("+listing.built_age+" Yrs Old)",
-                                        "ja": listing.built_year + "年" + listing.built_month + "月 (築"+listing.built_age+"年)"
-                                    }
-                                )}}
+                                        {{getLangText(
+                                            this.lang, 
+                                            {
+                                                "en":listing.built_month +"/"+ listing.built_year +" ("+listing.built_age+" Yrs Old)",
+                                                "ja": listing.built_year + "年" + listing.built_month + "月 (築"+listing.built_age+"年)"
+                                            }
+                                        )}}
+                                    </div>
+                                    <div class="listing-details is-size-7">
+                                        <b>{{ getLangText(this.lang, {"en":"Dist to Sta","ja":"交通"})+":"}}</b>
+                                        
+                                        {{ getDisToStaText(listing) }}
+                                    </div>
+                                    <!-- The accordion button -->
+                                    <button class="listing-details accordion-button is-size-7 has-text-weight-light" @click.stop="toggleAccordion(listing.property_inquiry_number)">
+                                        <span :class="['arrow', { active: (this.dropdownIndex != null && this.dropdownIndex===listing.property_inquiry_number) }]">&#9654;</span>
+                                    </button>
+                                </div>
+                                <button class="btn listing-details-btn" @click.stop="toggleAccordion(listing.property_inquiry_number)">
+                                    {{ 
+                                        this.dropdownIndex != null && this.dropdownIndex===listing.property_inquiry_number ?
+                                        getLangText(this.lang, {"en": "Hide","ja": "閉じる" }) :
+                                        getLangText(this.lang, {"en": "Details","ja": "詳細"})
+                                        
+                                    }}
+                                </button>
                             </div>
-                            <div class="listing-details is-size-7">
-                                <b>{{ getLangText(this.lang, {"en":"Dist to Sta","ja":"交通"})+":"}}</b>
-                                
-                                {{ getDisToStaText(listing) }}
-                            </div>
-                            <!-- The accordion button -->
-                            <button class="listing-details accordion-button is-size-7 has-text-weight-light" @click.stop="toggleAccordion(listing.property_inquiry_number)">
-                                <span :class="['arrow', { active: (this.dropdownIndex != null && this.dropdownIndex===listing.property_inquiry_number) }]">&#9654;</span>
-                            </button>
                         </td>
                     </tr>
 
