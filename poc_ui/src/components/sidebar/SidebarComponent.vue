@@ -55,11 +55,11 @@
 </template>
 
 <script>
-import { getLangText } from '../../utils/lang_utils';
-import GenderSlider from './sliders/GenderSlider.vue';
-import SizeSlider from './sliders/SizeSlider.vue';
-import PriceSlider from './sliders/PriceSlider.vue';
-import RadioButton from './BusinessTypeRadioButton.vue';
+import { getLangText } from '@utils/lang_utils';
+import GenderSlider from '@components/sidebar/sliders/GenderSlider.vue';
+import SizeSlider from '@components/sidebar/sliders/SizeSlider.vue';
+import PriceSlider from '@components/sidebar/sliders/PriceSlider.vue';
+import RadioButton from '@components/sidebar/BusinessTypeRadioButton.vue';
 
 export default {
   components: {

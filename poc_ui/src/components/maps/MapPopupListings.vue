@@ -7,18 +7,18 @@
             <div class="is-size-7 has-text-left has-text-weight-light popup-title">
                 {{ this.latlng }}
             </div>
-            <div class="is-size-7 has-text-left has-text-weight-normal popup-title">{{ 
-                getLangText(this.lang,
-                {
-                    "en": this.apiResponse.length + " Listing" + (this.apiResponse.length > 1 ? "s" : "") + " at this Address" ,
-                    "ja": this.apiResponse.length+"物件"
-                }
-            )   
-            }}
+            <div class="is-size-7 has-text-left has-text-weight-normal popup-title">
+                {{ 
+                    getLangText(this.lang,
+                        {
+                            "en": this.apiResponse.length + " Listing" + (this.apiResponse.length > 1 ? "s" : "") + " at this Address" ,
+                            "ja": this.apiResponse.length+"物件"
+                        }
+                    )
+                }}
             </div>
         </div>
 
-        
         <!-- List Area -->
         <div class="popup-listings-container">
             <table>
@@ -58,8 +58,7 @@
                                     </div>
                                     <div class="listing-details is-size-7">
                                         <b>{{ getLangText(this.lang, {"en":"Dist to Sta","ja":"交通"})+":"}}</b>
-                                        
-                                        {{ getDisToStaText(listing) }}
+                                        <div v-html="getDisToStaText(listing)"></div>
                                     </div>
                                     <!-- The accordion button -->
                                     <button class="listing-details accordion-button is-size-7 has-text-weight-light" @click.stop="toggleAccordion(listing.property_inquiry_number)">
@@ -71,7 +70,6 @@
                                         this.dropdownIndex != null && this.dropdownIndex===listing.property_inquiry_number ?
                                         getLangText(this.lang, {"en": "Hide","ja": "閉じる" }) :
                                         getLangText(this.lang, {"en": "Details","ja": "詳細"})
-                                        
                                     }}
                                 </button>
                             </div>
@@ -94,9 +92,8 @@
                 </div>
             </table>
             <div v-if="debug">
-                API Params: {{ apiParams }}{{ latlng }}<br>
-                API URL: {{apiUrl}}<br>
-                API Response: {{apiResponse}}
+                API URL: {{ apiUrl }}<br>
+                API Response: <pre>{{ JSON.stringify(apiResponse, null, 2) }}</pre>
             </div>
         </div>
     </div>
@@ -112,9 +109,9 @@ import {
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import {Doughnut} from 'vue-chartjs';
 
-import ListingDetailedView from './ListingDetailedView.vue';
-import {createApiUrlForAddress, callRestApi} from '../../utils/rest_api_utils.js';
-import { getLangText } from '../../utils/lang_utils';
+import ListingDetailedView from '@components/maps/ListingDetailedView.vue';
+import {createApiUrlForAddress, callRestApi} from '@utils/rest_api_utils.js';
+import { getLangText } from '@utils/lang_utils';
 
 ChartJS.register(CategoryScale, LinearScale, ArcElement, Tooltip, ChartDataLabels);
 
@@ -179,10 +176,10 @@ export default {
             };
         },
 
-        getDisToStaText( listing){
+        getDisToStaText(listing){
             var resultStr = getLangText(this.lang, {
                 "en": listing.dist_to_sta_walk_time + "Min Walk",
-                "ja": "徒歩"+listing.dist_to_sta_walk_time+"分"
+                "ja": "・"+listing.transportation.replace(/\\n/g,"<br>・")
             });
 
             // If the mode is not just walking
@@ -190,7 +187,7 @@ export default {
                 if(listing.dist_to_sta_other_mode == "バス")
                     resultStr = getLangText(this.lang,{
                         "en": listing.dist_to_sta_other_mode_time + " Min Bus + " + resultStr,
-                        "ja": "バス" + listing.dist_to_sta_other_mode_time + "分 + " + resultStr
+                        "ja": resultStr
                     });
             }
             return resultStr;

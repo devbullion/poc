@@ -75,3 +75,5 @@ SELECT
 FROM scored_listings
 GROUP BY address, address_kanji, longitude, latitude
 ORDER BY max_score DESC, address DESC;
+
+-- listings?dist=10000&m=0.5&size=30&px=5000&btype=beauty&lat=34.6826516&lon=135.8154434

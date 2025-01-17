@@ -81,7 +81,7 @@ $header-min-height: 50px;
     @media (max-width: $tablet) { 
         position: absolute;
         top: calc($layout-padding*2); 
-        left: $layout-padding/2;
+        left: calc($layout-padding/2);
         max-width: calc(100% - 3*$layout-padding);
 
         transition: transform 0.3s ease-in-out;

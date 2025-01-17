@@ -112,7 +112,7 @@ def get_listing():
     params = {param: request.args.get(param) for param in ['m', 'size', 'px', 'id']} | btype_dict[b_type]
     
     pop_radius = str(btype_dict[b_type]['pop_radius'])+'km'
-    query_file = f"db/queries/addrelisting_detail_{pop_radius}_query.sql"
+    query_file = f"db/queries/listing_detail_{pop_radius}_query.sql"
 
     dict_results = dbutils.run_query_from_file_and_return_dict(
         query_file, 

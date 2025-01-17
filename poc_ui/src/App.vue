@@ -39,31 +39,33 @@
           <POCMap 
             v-model="mapLatLng" 
             :radius="mapRadius" 
-            :listings="apiResponse" 
+            :markers="apiResponse" 
             :apiParams="apiParams" 
             :lang="lang"
             :debug="debug" 
           /> 
+        </div>
       </div>
-      </div>
-
     </div>
   <!--/div-->
 
   <!-- API Call -->    
   <p v-if="debug">
     {{ this.sidebarData }}<br>
-    <b>API Call:</b> {{ this.apiUrl }}<br>
-    <b>API Response:</b> {{ this.apiResponse }}
+    <b>API Call: </b>
+    {{ this.apiUrl }}<br>
+
+    <b>API Response: </b>
+    <pre>{{ JSON.stringify(this.apiResponse, null, 2) }}</pre>
   </p> 
 </template>
 
 
 <script>
-import { callRestApi, createApiUrlForListings } from './utils/rest_api_utils';
-import { getLangText } from './utils/lang_utils';
-import POCMap from "./components/maps/POCMap.vue";
-import SidebarComponent from './components/sidebar/SidebarComponent.vue';
+import { callRestApi, createApiUrlForListings } from '@utils/rest_api_utils';
+import { getLangText } from '@utils/lang_utils';
+import POCMap from "@components/maps/POCMap.vue";
+import SidebarComponent from '@components/sidebar/SidebarComponent.vue';
 
 export default {
   components: {

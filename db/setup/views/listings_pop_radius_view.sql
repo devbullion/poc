@@ -7,7 +7,7 @@ WITH tmp_distances AS (
         (l.rent_price / l.size_number) AS price_per_sq_m,
         ST_Distance(ST_MakePoint(l.longitude, l.latitude)::geography, ST_MakePoint(p.x_code, p.y_code)::geography) AS distance,
 		l.*,
-        p.*
+		p.*
     FROM
         re_listings l
     JOIN
@@ -40,6 +40,7 @@ SELECT
 	dist_to_sta_walk_time,
 	dist_to_sta_other_mode,
 	dist_to_sta_other_mode_time,
+	transportation,
 
     
     -- 2km M
@@ -196,7 +197,8 @@ GROUP BY
 	
 	dist_to_sta_walk_time,
 	dist_to_sta_other_mode,
-	dist_to_sta_other_mode_time;
+	dist_to_sta_other_mode_time,
+	transportation;
     
 GRANT SELECT ON listings_pop_radius_view TO python;
 GRANT SELECT ON listings_pop_radius_view TO gen;

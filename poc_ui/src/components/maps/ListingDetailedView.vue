@@ -28,11 +28,6 @@
                 )}}
             </button>
         </div>
-
-
-         <div v-if="debug"> 
-            <b>BarData</b> {{ barData }}<br>
-        </div> 
     </div>
 </template>
 
@@ -44,8 +39,8 @@ import {
 } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import {Bar} from 'vue-chartjs';
-import {createApiUrlForListingDetail, callRestApi} from '../../utils/rest_api_utils.js';
-import { getLangText } from '../../utils/lang_utils';
+import {createApiUrlForListingDetail, callRestApi} from '@utils/rest_api_utils.js';
+import { getLangText } from '@utils/lang_utils';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, ChartDataLabels);
 
