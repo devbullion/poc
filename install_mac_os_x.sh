@@ -24,6 +24,7 @@ npm install flag-icon-css
 
 # For the Maps
 npm install vue3-leaflet leaflet
+npm install leaflet-extra-markers
 npm install leaflet.gridlayer.googlemutant
 
 # For the Charts

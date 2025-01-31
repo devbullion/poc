@@ -5,8 +5,6 @@ import App from './App.vue'
 import 'leaflet/dist/leaflet.css';
 import './assets/styles/scss/styles.scss'; 
 
-import VTooltip from 'v-tooltip'
 
 const app = createApp(App);
-app.use(VTooltip);
 app.mount('#app')

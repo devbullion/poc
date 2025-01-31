@@ -125,6 +125,7 @@ export default {
       }
     },
     async callApi(){
+      if(this.debug) console.log("Calling API from App.vue");
       this.updateApiParams();
       this.apiUrl = createApiUrlForListings({...this.apiParams, lat: this.mapLatLng[0], lon: this.mapLatLng[1]});
       this.apiResponse = await callRestApi(this.apiUrl);

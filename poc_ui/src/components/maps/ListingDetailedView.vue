@@ -58,14 +58,19 @@ export default {
     computed:{
         barData() {
             var data =[];
-            if(this.apiResponse==null || this.apiResponse.length==0){
+            try{
+                if(this.apiResponse==null || !this.apiResponse || this.apiResponse.length==0){
+                    data= [0,0,0];
+                } else {
+                    data = [ 
+                        Math.round(this.apiResponse[0].pop_score*100), 
+                        Math.round(this.apiResponse[0].size_score*100),
+                        Math.round(this.apiResponse[0].price_score*100), 
+                    ]
+                }
+            } catch(e){
+                console.error(e);
                 data= [0,0,0];
-            } else {
-                data = [ 
-                    Math.round(this.apiResponse[0].pop_score*100), 
-                    Math.round(this.apiResponse[0].size_score*100),
-                    Math.round(this.apiResponse[0].price_score*100), 
-                ]
             }
 
             return{
@@ -128,13 +133,25 @@ export default {
         };
         const apiUrl = null;
         const apiResponse = [];
-        return {apiUrl, apiResponse, barOptions};
+        const isOpen=false;
+
+        return {apiUrl, apiResponse, barOptions, isOpen};
+    },
+    watch: {
+        apiParams: { 
+            handler:'callApi',
+            deep: true
+        },
     },
     methods:{
         getLangText,
         async callApi(){
-            this.apiUrl = createApiUrlForListingDetail({...this.apiParams, id: this.listingID});
-            this.apiResponse = await callRestApi(this.apiUrl);
+            if(this.isOpen){
+                if(this.debug) console.log("Calling API from ListingDetailedView.vue "+this.listingID);
+            
+                this.apiUrl = createApiUrlForListingDetail({...this.apiParams, id: this.listingID});
+                this.apiResponse = await callRestApi(this.apiUrl);
+            }
         },
 
         contactSales(){
@@ -175,6 +192,10 @@ export default {
             
             window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
         },
+
+        setPopupOpen(isOpen){
+            this.isOpen = isOpen;
+        }
     }
 }
 </script>

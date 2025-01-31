@@ -10,10 +10,10 @@
             <div class="is-size-7 has-text-left has-text-weight-normal popup-title">
                 {{ 
                     getLangText(this.lang,
-                        {
-                            "en": this.apiResponse.length + " Listing" + (this.apiResponse.length > 1 ? "s" : "") + " at this Address" ,
-                            "ja": this.apiResponse.length+"物件"
-                        }
+                    {
+                        "en": this.apiResponse.length + " Listing" + (this.apiResponse.length > 1 ? "s" : "") + " at this Address" ,
+                        "ja": this.apiResponse.length+"物件"
+                    }
                     )
                 }}
             </div>
@@ -93,6 +93,7 @@
             </table>
             <div v-if="debug">
                 API URL: {{ apiUrl }}<br>
+                API Params: <pre>{{ JSON.stringify(apiParams, null, 2) }}</pre>
                 API Response: <pre>{{ JSON.stringify(apiResponse, null, 2) }}</pre>
             </div>
         </div>
@@ -135,7 +136,7 @@ export default {
         
         const donutOptions = {
             animation:{
-                duration: 2000,
+                duration: 3000,
                 easing: 'easeInOutQuart',
             },
             backgroundColor: [fillColor, fillerColor],
@@ -148,26 +149,33 @@ export default {
         };
         const apiUrl = null;
         const apiResponse = [];
+        const isOpen = false;
         return { 
             apiUrl,apiResponse,
-            donutOptions, dropdownIndex};
+            isOpen,
+            donutOptions, dropdownIndex
+        };
     },
     methods:{
         getLangText,
         async callApi(){
-            console.log("Calling API for address: ", this.address, {...this.apiParams, lat: this.latlng[0], lon: this.latlng[1]});
-            this.apiUrl = createApiUrlForAddress({...this.apiParams, lat: this.latlng[0], lon: this.latlng[1]});
-            console.log("API URL: ", this.apiUrl);
-            this.apiResponse = await callRestApi(this.apiUrl);
-            console.log("API Response: ", this.apiResponse);
+            if(this.isOpen){
+                if(this.debug) console.log("Calling API from MapPopupListings.vue "+this.latlng);
+                this.apiUrl = createApiUrlForAddress({...this.apiParams, lat: this.latlng[0], lon: this.latlng[1]});
+                this.apiResponse = await callRestApi(this.apiUrl);
+            }
         },
-
 
         // UI Methods below this line
         toggleAccordion(index) {
             this.dropdownIndex = this.dropdownIndex === index ? null : index;
-            if(this.dropdownIndex != null)
+            if(this.dropdownIndex != null){
+                this.$refs['ref_'+this.dropdownIndex+'_listing_detailed_view'][0].setPopupOpen(true);
                 this.$refs['ref_'+this.dropdownIndex+'_listing_detailed_view'][0].callApi();
+            }
+            else{
+                this.$refs['ref_'+index+'_listing_detailed_view'][0].setPopupOpen(false);
+            }
         },
         getDonutData( totalScore){
             return {
@@ -191,7 +199,18 @@ export default {
                     });
             }
             return resultStr;
+        },
+
+        setPopupOpen(isOpen){
+            this.isOpen = isOpen;
+            if(this.debug) console.log("Set Popup Open: "+this.isOpen);
         }
+    },
+    watch: {
+        apiParams: { 
+            handler:'callApi',
+            deep: true
+        },
     }
 }
 </script>

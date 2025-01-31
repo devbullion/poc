@@ -34,11 +34,10 @@
         :lat-lng="[marker.latitude, marker.longitude]"
         
         @click="handleMarkerClick(marker.address)"
-        class="map-popup"
-        ref="markers"
+        :icon="extraMarkerIcon"
       >
         <l-icon 
-          :icon-url="iconUrl"
+          :icon-url="getMarkerIconUrl(marker.max_score)"
           :icon-size="iconSize"
           :icon-anchor="iconAnchor"
 
@@ -46,6 +45,7 @@
           :shadow-size="shadowSize"
           :shadow-anchor="shadowAnchor"
         />
+        <l-tooltip :options = "tooltipOptions">{{marker.max_score}}</l-tooltip>
         <!-- We set autoPan to false due to the recursion -->
         <LPopup 
           ref="popup" 
@@ -67,20 +67,22 @@
 </template>
 
 <script>
-import { LMap, LTileLayer, LCircle, LMarker, LIcon, LPopup, LControlZoom} from "@vue-leaflet/vue-leaflet";
+import { LMap, LTileLayer, LCircle, LMarker, LPopup, LControlZoom, LTooltip, LIcon} from "@vue-leaflet/vue-leaflet";
 import {ref} from 'vue';
+import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import 'leaflet-extra-markers/dist/css/leaflet.extra-markers.min.css';
+import 'leaflet-extra-markers/dist/js/leaflet.extra-markers.min.js';
+
 import shadowImage from 'leaflet/dist/images/marker-shadow.png';
 import MapPopupListings from '@components/maps/MapPopupListings.vue';
+
+// const top_n = 3;
 
 export default {
   setup(){
     const debug_circle = ref(null);
-
     return {debug_circle};
-  },
-  created() {
-    console.log('debug prop value:', this.debug);
   },
   props: {
     apiParams: { type: Object, required: true },
@@ -91,25 +93,49 @@ export default {
     debug: {type: Boolean, default: false},
   },
   components: {
-    LMap, LTileLayer, LMarker, LIcon, LPopup, LCircle,LControlZoom,
+    LMap, LTileLayer, LMarker, LPopup, LCircle, LControlZoom, LTooltip, LIcon,
     MapPopupListings
   },
   data() {
+    const markerWidth = 38;
+    const markerHeight = 95;
+
     return {
-      iconUrl: require('@/assets/images/icons/markers/large_center_blue_marker.svg'),
-      iconSize: [38, 95], // Default icon size
-      iconAnchor: [19, 67.5], // Default icon anchor
+      extraMarkerIcon: L.ExtraMarkers.icon({
+        icon: 'fa-number',
+        number: '1',
+        markerColor: 'blue',
+        shape: 'square',
+        prefix: 'fa'
+      }),
+      iconSize: [markerWidth, markerHeight], // Default icon size
+      iconAnchor: [markerWidth/2, 67.5], // Default icon anchor
 
       shadowUrl: shadowImage,
       shadowSize: [50, 64], // Default shadow size
-      shadowAnchor: [10, 61] // Default shadow anchor
+      shadowAnchor: [12, 64], // Default shadow anchor
+
+      tooltipOptions: {
+        direction: 'center',
+        offset: [0, -26],
+        permanent: true
+      },
     };
   },
   methods: {
-    
-    handleMarkerClick(listingId) {
-      this.$refs['ref_' + listingId + '_popup'][0].callApi();
-      console.log("Clicked on marker: "+listingId);
+    getMarkerIconUrl(max_score) {
+
+      if(this.markers[0].max_score == max_score)
+        return require('@/assets/images/icons/markers/large_center_gold_marker.svg');
+      else
+        return require('@/assets/images/icons/markers/large_center_blue_marker.svg');
+      
+    },
+    handleMarkerClick(address) {
+      if(this.debug) console.log("Clicked on marker: "+address);
+      console.log(this.$refs['ref_' + address + '_popup'][0]);
+      this.$refs['ref_' + address + '_popup'][0].setPopupOpen(true);
+      this.$refs['ref_' + address + '_popup'][0].callApi();
     },
 
     updateCenter(e) {

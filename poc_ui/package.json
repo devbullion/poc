@@ -16,6 +16,7 @@
     "core-js": "^3.8.3",
     "countup.js": "^2.8.0",
     "leaflet": "^1.9.4",
+    "leaflet-extra-markers": "^1.2.2",
     "leaflet.gridlayer.googlemutant": "^0.14.1",
     "npm": "^11.0.0",
     "v-tooltip": "^1.1.6",
